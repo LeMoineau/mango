@@ -1,0 +1,102 @@
+
+<ion-content>
+
+  <!-- Settings -->
+  <ion-list id="settings-global-list">
+    <ion-list-header>
+      <ion-label>
+        <h2>Général</h2>
+      </ion-label>
+    </ion-list-header>
+    <settings-toggle-item baseIcon="moon" targetParameter="darkMode">
+      Mode Sombre
+    </settings-toggle-item>
+    <settings-toggle-item baseIcon="wifi" targetParameter="lowConnectionMode">
+      Mode Economie de Connexion
+    </settings-toggle-item>
+    <settings-toggle-item baseIcon="bookmark" targetParameter="autoSaveMangas">
+      Auto-Save Mangas
+    </settings-toggle-item>
+    <ion-item button (click)="viderCache()">
+      <ion-label>
+        Vider le cache
+      </ion-label>
+      <ion-icon [name]="getUpdatedIconDarkMode('archive')" slot="start"></ion-icon>
+    </ion-item>
+    <ion-item button (click)="eraseAllStorage()">
+      <ion-label>
+        Effacer toutes les données
+      </ion-label>
+      <ion-icon [name]="getUpdatedIconDarkMode('trash')" slot="start"></ion-icon>
+    </ion-item>
+
+    <!-- Proxy pour new chapter et download (ion-select) -->
+    <!-- Allow de chercher dans tous les proxy lors d'une recherche manuelle (searchbar) (sinon que dans proxyNewChapters et proxyRecentChapters) -->
+  </ion-list>
+
+  <ion-list lines="full">
+    <ion-list-header>
+      <ion-label>
+        <h2>Sources Chapitres</h2>
+      </ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-icon [name]="getUpdatedIconDarkMode('newspaper')" slot="start"></ion-icon>
+      <ion-label>
+        Nouveautés
+      </ion-label>
+      <ion-select
+          [value]="settingsService.getParameter('proxyNewChapter')"
+          (ionChange)="selectChange('proxyNewChapter', $event)">
+        <ion-select-option *ngFor="let proxy of proxyService.iter" [value]="proxy"> {{ proxy }} </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-icon [name]="getUpdatedIconDarkMode('file-tray')" slot="start"></ion-icon>
+      <ion-label>
+        Source globale
+      </ion-label>
+      <ion-select
+          [value]="settingsService.getParameter('proxyDownloadChapter')"
+          (ionChange)="selectChange('proxyDownloadChapter', $event)">
+        <ion-select-option *ngFor="let proxy of proxyService.iter" [value]="proxy"> {{ proxy }} </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-icon [name]="getUpdatedIconDarkMode('search')" slot="start"></ion-icon>
+      <ion-label>
+        Recherche
+      </ion-label>
+      <ion-select
+          [value]="settingsService.getParameter('proxySearch')"
+          (ionChange)="selectChange('proxySearch', $event)">
+        <ion-select-option *ngFor="let proxy of proxyService.iter" [value]="proxy"> {{ proxy }} </ion-select-option>
+        <ion-select-option value="all"> Toutes les sources </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <!-- Crédits -->
+    <ion-list-header>
+      <ion-label>
+        <h2>Crédits</h2>
+      </ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let proxy of proxyService.iter">
+      <ion-avatar slot="start">
+        <img [src]="'../assets/icon/' + proxy + '.png'">
+      </ion-avatar>
+      <ion-label>
+        <h2 class="proxy-title"> {{ proxy }} </h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button class="settings-button" (click)="showAllSettings()" expand="block">
+    show all settings
+  </ion-button>
+  <ion-button class="settings-button" (click)="showStorage()" expand="block">
+    show all storage
+  </ion-button>
+</ion-content>

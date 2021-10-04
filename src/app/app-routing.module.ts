@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { MangathequeComponent } from './mangatheque/mangatheque.component';
+import { DownloadComponent } from './download/download.component';
+import { SettingsComponent } from './settings/settings.component';
+
 const routes: Routes = [
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
+  { path: '', component: MangathequeComponent },
+  { path: 'mangatheque', component: MangathequeComponent },
+  { path: 'download', component: DownloadComponent },
+  { path: 'settings', component: SettingsComponent }
 ];
 
 @NgModule({
@@ -19,4 +18,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

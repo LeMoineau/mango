@@ -1,0 +1,43 @@
+
+#global-header {
+
+  --header-border-radius: 20px;
+
+  &::after {
+    background-image: none; //enleve l'ombre du header
+  }
+
+  #global-header-toolbar {
+
+    --background: var(--background-light-grey);
+    border-radius: 0 0 var(--header-border-radius) var(--header-border-radius);
+
+    #global-header-row {
+
+      ion-col {
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+      }
+
+      #global-header-title {
+
+      }
+
+      #global-header-search-button {
+
+        text-align: right;
+        font-size: 25px;
+        box-sizing: border-box;
+        padding-right: 20px;
+        justify-content: flex-end;
+
+      }
+
+    }
+  }
+
+}

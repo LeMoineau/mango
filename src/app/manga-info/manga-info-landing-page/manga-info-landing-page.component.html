@@ -1,0 +1,104 @@
+
+<!-- Illustration -->
+<section id="information-illustration-section" class="manga-info-section">
+  <manga-icon
+    *ngIf="!InWaiting()"
+    [mangaImage]="manga.image"
+    [mangaTitle]="manga.title"
+    class="information-illustration">
+  </manga-icon>
+  <ion-thumbnail *ngIf="InWaiting()" class="information-illustration">
+    <ion-skeleton-text animated></ion-skeleton-text>
+  </ion-thumbnail>
+</section>
+
+<!-- Info List -->
+<section id="information-text-section" class="manga-info-section">
+  <ion-list id="information-text-items-container" class="manga-info-items-container">
+
+    <!-- Header -->
+    <ion-item lines="full" class="items-container-title">
+      <ion-label>
+        <h2 class="items-container-title all-centered-title">
+          {{ manga.title }}
+          <ng-container *ngFor="let tag of tagsService.iter()">
+            <ion-icon
+              *ngIf="tagsService.getTagInfo(tag, 'state')"
+              [name]="tagsService.getTagIcon(tag)"
+              [color]="tagsService.getTagInfo(tag, 'color')"
+              slot="start">
+            </ion-icon>
+          </ng-container>
+        </h2>
+      </ion-label>
+    </ion-item>
+
+    <ion-spinner *ngIf="InWaiting()" name="circular"></ion-spinner>
+
+    <!-- Les infos -->
+    <ng-container *ngFor="let info of manga.infos.iter">
+      <ion-item
+          class="information-text-lines">
+        <ion-input
+          [value]="info"
+          [readonly]="!isInEdition()"
+          longTap
+          (longPress)="deleteInformation(info)"
+          (ionChange)="addNewInfoKey(info, $event.detail.value)"
+          placeholder="info label"
+          position="fixed"
+          slot="start"
+          class="info-label-entitle infokey-input">
+        </ion-input>
+        <ion-textarea
+          [value]="manga.infos[info]"
+          [readonly]="!isInEdition()"
+          longTap
+          (longPress)="deleteInformation(info)"
+          placeholder="info content"
+          [(ngModel)]="manga.infos[info]"
+          autoGrow="true"
+          rows="1"
+          class="info-label-info">
+        </ion-textarea>
+      </ion-item>
+    </ng-container>
+
+    <!-- Aucune infos trouvées -->
+    <ng-container *ngIf="manga.infos.iter.length <= 0 && !InWaiting()">
+      <ion-item class="not-found-message">
+        <ion-icon
+          size="large"
+          name="compass"
+          slot="start"
+          class="not-found-icon">
+        </ion-icon>
+        <ion-label>
+          <h3 class="not-found-title item-label-title"> Aucune informations trouvées... </h3>
+          <p class="not-found-p">
+            {{ settingsService.getParameter("lowConnectionMode") ?
+              "Vous êtes en mode mauvaise connection... Swipez à droite pour charger les infos !" :
+              "Mais n'hésite pas à ajouter des informations personnalisées !" }}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+
+    <!-- Chargement des informations en cours -->
+    <ng-container *ngIf="InWaiting()">
+      <ion-item *ngFor="let skeleton of [1, 2, 3]" class="information-text-lines-skeleton">
+        <ion-label>
+          <ion-skeleton-text animated style="width: 88%"> </ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 60%"> </ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+
+    <!-- Boutons d'ajout d'information -->
+    <ion-button
+        *ngIf="isInEdition()"
+        (click)="addNewInformationInEdition()">
+      Ajouter une information
+    </ion-button>
+  </ion-list>
+</section>

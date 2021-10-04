@@ -1,0 +1,13 @@
+
+#global-footer {
+
+  --footer-border-radius: 20px;
+
+  border-radius: var(--footer-border-radius) var(--footer-border-radius) 0 0;
+
+  .global-footer-button-icon {
+    color: var(--background-footer-icon);
+    fill: var(--background-footer-icon);
+  }
+
+}

@@ -1,0 +1,78 @@
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col class="manga-filter-col">
+        <ion-fab-button
+            id="follow-button"
+            class="manga-filter-button"
+            [color]="filterButtonColor.mangaFollowed"
+            (click)="toggleFilter('mangaFollowed')">
+          <ion-icon name="navigate-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-col>
+      <ion-col class="manga-filter-col">
+        <ion-fab-button
+            id="favoris-button"
+            class="manga-filter-button"
+            [color]="filterButtonColor.mangaFavoris"
+            (click)="toggleFilter('mangaFavoris')">
+          <ion-icon name="star-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-col>
+      <ion-col class="manga-filter-col">
+        <ion-fab-button
+            id="saved-button"
+            class="manga-filter-button active"
+            [color]="filterButtonColor.mangaSaved"
+            (click)="toggleFilter('mangaSaved')">
+          <ion-icon name="bookmark-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-col>
+      <ion-col class="manga-filter-col">
+        <ion-fab-button id="close-button" class="manga-filter-button" color="light" (click)="clearFilter()">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshMangaList($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circular">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ng-container *ngFor="let mangaTmp of toShowMangas">
+      <app-manga
+        *ngIf="allMangas[mangaTmp.mangaParsedTitle] !== undefined"
+        [manga]="allMangas[mangaTmp.mangaParsedTitle]"
+        (mangaInfoClose)="mangaInfoClose($event)"
+        affichage="mangatheque">
+      </app-manga>
+    </ng-container>
+  </ion-list>
+  <!--
+  <ion-grid id="to-show-manga-super-container">
+    <ion-row id="to-show-manga-container">
+      <ion-col *ngFor="let choosenOne of toShowMangas" class="to-show-manga">
+        <manga-icon
+          *ngIf="allMangas[choosenOne.manga] !== undefined"
+          [mangaImage]="allMangas[choosenOne.manga].image"
+          [mangaTitle]="allMangas[choosenOne.manga].title"
+          (click)="openMangaInfo(choosenOne.manga)"
+          class="manga-thumbnail">
+        </manga-icon>
+        <ion-thumbnail *ngIf="allMangas[choosenOne.manga] === undefined" class="manga-thumbnail">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  -->
+
+</ion-content>

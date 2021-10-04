@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { HomePage } from './home.page';
+import { MangaInfoLandingPageComponent } from './manga-info-landing-page.component';
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('MangaInfoLandingPageComponent', () => {
+  let component: MangaInfoLandingPageComponent;
+  let fixture: ComponentFixture<MangaInfoLandingPageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomePage ],
+      declarations: [ MangaInfoLandingPageComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(MangaInfoLandingPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

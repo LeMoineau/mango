@@ -1,0 +1,13 @@
+
+<ion-item>
+  <ion-icon slot="start" [name]="getIcon()"></ion-icon>
+  <ion-label>
+    <ng-content> </ng-content>
+  </ion-label>
+  <ion-toggle
+    id="themeToggle"
+    slot="end"
+    (click)="toggleTargetParameter()"
+    [checked]="baseChecked"
+  ></ion-toggle>
+</ion-item>

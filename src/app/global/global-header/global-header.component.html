@@ -1,0 +1,14 @@
+
+<ion-header slot="top" [translucent]="true" id="global-header">
+  <ion-toolbar id="global-header-toolbar">
+    <ion-row id="global-header-row">
+      <ion-searchbar
+        [placeholder]="getSelectedTitle().title"
+        [(ngModel)]="getSelectedTitle().inputSearchBar"
+        (search)="search()"
+        [debounce]="0"
+        #searchbar>
+      </ion-searchbar>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>

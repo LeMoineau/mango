@@ -1,0 +1,57 @@
+
+<ion-header id="reader-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="close()" defaultHref="mangatheque"> </ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="chapter.title.length <= 0" class="chapter-header-title"> Chapitre {{ chapter.num }} </ion-title>
+    <ion-title *ngIf="chapter.title.length > 0" class="chapter-header-title"> #{{ chapter.num }} - {{ chapter.title }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="global-container">
+  <ion-slides
+      *ngIf="loadingConst.pageCharged"
+      (ionSlideDidChange)="slideChange()"
+      id="global-slides-container"
+      [options]="slidesOpts"
+      #slides>
+    <ion-slide *ngFor="let page of getPages(chapter); let indexOfElement = index" class="slides">
+      <div class="swiper-zoom-container">
+        <img [src]="readerInfos.pagesContent[indexOfElement]">
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="movePage('left')">
+        <ion-icon size="large" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="zoom('out')">
+        <ion-icon size="large" name="remove-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="footer-title">
+      <ion-select
+          (ionChange)="changePage($event)"
+          value="{{ readerInfos.currentPage }}"
+          placeholder="page"
+          name="page selection"
+          id="page-changer"
+          #select>
+        <ion-select-option *ngFor="let pageNumber of readerInfos.pagesNumbers" [value]="pageNumber"> {{ pageNumber }} </ion-select-option>
+      </ion-select>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="zoom('in')">
+        <ion-icon size="large" name="add-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="movePage('right')">
+        <ion-icon size="large" name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

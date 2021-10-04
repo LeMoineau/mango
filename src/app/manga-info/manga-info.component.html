@@ -1,0 +1,71 @@
+
+<ion-header id="manga-info-header">
+  <ion-toolbar id="manga-info-header-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="close()" defaultHref="mangatheque">back</ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ manga.title }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openMangaInfoMenu($event)">
+        <ion-icon slot="icon-only" name="ellipsis-vertical" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="global-container">
+  <ion-slides
+    *ngIf="slidesManager.pageCharged"
+    (ionSlideWillChange)="updateFabButtonVisible()"
+    id="global-slides-container"
+    #slides>
+
+    <!-- Information sur le manga -->
+    <ion-slide class="manga-info-slide">
+      <manga-info-landing-page
+        [manga]="manga">
+      </manga-info-landing-page>
+    </ion-slide>
+
+    <ion-slide class="manga-info-slide">
+      <manga-info-local-page
+        [manga]="manga">
+      </manga-info-local-page>
+    </ion-slide>
+
+    <ion-slide class="manga-info-slide">
+      <manga-info-download-page
+        [manga]="manga"
+        (newMangaInfoLoaded)="newMangaInfoLoaded($event)">
+      </manga-info-download-page>
+    </ion-slide>
+  </ion-slides>
+
+  <div id="fab-button-container">
+    <ion-fab id="edit-button" class="fab-button" vertical="bottom" horizontal="end" slot="fixed" style="display: block">
+      <ion-fab-button
+          (click)="editInfos()"
+          color="success">
+        <ion-icon [name]="getEditionButtonIcon()" style="color: white"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-fab id="delete-button" class="fab-button" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button
+          (click)="deleteSelectedChapters()"
+          [disabled]="localPage !== undefined ? localPage.noChapters() : true"
+          color="danger">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-fab id="download-button" class="fab-button" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button
+          (click)="downloadSelectedChapters()"
+          [disabled]="downloadPage !== undefined ? downloadPage.noChapters() : true"
+          color="primary">
+        <ion-icon name="download-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>

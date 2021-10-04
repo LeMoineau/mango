@@ -1,0 +1,18 @@
+
+<ion-item class="manga" (click)="openMangaInfo()">
+  <manga-icon slot="start" class="manga-image" [mangaTitle]="manga.title" [mangaImage]="manga.image"></manga-icon>
+  <ion-label class="manga-info">
+    <h2 class="manga-title">
+      {{ manga.title }}
+      <ng-container *ngFor="let tag of tagsEnabled">
+        <ion-icon
+          [name]="tagsService.getTagInfo(tag, 'icon')"
+          [color]="tagsService.getTagInfo(tag, 'color')"
+          slot="start">
+        </ion-icon>
+      </ng-container>
+    </h2>
+    <h3 class="manga-subinfo"> {{ getSubinfoString() }} </h3>
+    <p> {{ getSubsubInfoString() }} </p>
+  </ion-label>
+</ion-item>

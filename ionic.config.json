@@ -1,5 +1,21 @@
 {
   "name": "mango",
-  "integrations": {},
-  "type": "angular"
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular",
+  "v2": true,
+  "typescript": true,
+  "proxies": [
+    {
+      "path": "/scanvf/",
+      "proxyUrl": "https://www.scan-vf.net/"
+    },
+    {
+      "path": "/local/",
+      "proxyUrl": "http://localhost:3000/"
+    }
+  ],
+  "id": "id"
 }

@@ -1,0 +1,66 @@
+
+<!--
+<app-global-header [title]="'Télécharger Chapitres'"></app-global-header>
+-->
+
+<ion-content>
+
+  <!-- Content "normal" -->
+  <ion-content *ngIf="!isInSearching()">
+    <!-- Message lowConnectionMode -->
+    <section *ngIf="getLowConnectionMode() && mangaList.newestChapters.length <= 0 && mangaList.recentChapters.length <= 0"
+    id="low-connection-information">
+      <h2 id="low-connection-information-title"> Mode économie de connexion </h2>
+      <p>Nous chargerons du contenu depuis Internet que lorsque vous le voudrez !</p>
+      <p>Les illustrations des mangas sont aussi cachées pour minimiser au maximum l'utilisation de donnée.</p>
+    </section>
+
+    <!-- Nouveaux Chapitres -->
+    <ion-text *ngIf="mangaList.newestChapters.length > 0">
+      <h2 class="section-title"> Nouveaux Chapitres </h2>
+    </ion-text>
+    <ion-list *ngFor="let manga of mangaList.newestChapters">
+      <app-manga
+        [manga]="manga"
+        baseActiveSlide="2">
+      </app-manga>
+    </ion-list>
+
+    <!-- Chapitres récents -->
+    <ion-text *ngIf="mangaList.recentChapters.length > 0">
+      <h2 class="section-title"> Chapitres Récents </h2>
+    </ion-text>
+    <ion-list>
+      <ng-container *ngFor="let manga of mangaList.recentChapters">
+        <app-manga *ngIf="manga.title.length > 0"
+          [manga]="manga"
+          baseActiveSlide="2">
+        </app-manga>
+      </ng-container>
+    </ion-list>
+
+    <!-- Scroll infini -->
+    <ion-infinite-scroll *ngIf="!getLowConnectionMode()" threshold="100px" (ionInfinite)="refreshMangaList($event)">
+      <ion-infinite-scroll-content loadingSpinner="circular"> </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <section>
+      <ion-button *ngIf="getLowConnectionMode()" class="low-connection-button" expand="block" (click)="getNewMangaChapters(undefined)">
+        Charger les chapitres
+      </ion-button>
+    </section>
+  </ion-content>
+
+  <!-- Content searching -->
+  <ion-content *ngIf="isInSearching()">
+    <ion-spinner *ngIf="InWaiting()" name="circular"></ion-spinner>
+    <ion-list>
+      <ng-container *ngFor="let result of searchingResult">
+        <app-manga
+          [manga]="result.data"
+          affichage="sourced-manga">
+        </app-manga>
+      </ng-container>
+    </ion-list>
+  </ion-content>
+
+</ion-content>

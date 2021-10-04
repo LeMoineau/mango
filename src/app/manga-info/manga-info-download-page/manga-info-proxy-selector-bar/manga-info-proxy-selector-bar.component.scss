@@ -1,0 +1,16 @@
+
+.proxy-selector-bar {
+
+  .proxy-avatar {
+    img {
+      --size: 100%;
+      width: var(--size);
+      height: var(--size);
+    }
+  }
+
+  .proxy-selector-select {
+    --padding-start: 0;
+  }
+
+}

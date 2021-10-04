@@ -1,0 +1,17 @@
+
+<ion-item class="proxy-selector-bar">
+  <ion-avatar slot="start" class="proxy-avatar">
+    <img [src]="'./../../assets/icon/' + selectedProxy + '.png'">
+  </ion-avatar>
+  <ion-label class="proxy-selector-label">
+    Source
+  </ion-label>
+  <ion-select
+      [value]="selectedProxy"
+      (ionChange)="changeProxyValue($event)"
+      class="proxy-selector-select">
+    <ng-container *ngFor="let proxy of proxyService.iter">
+      <ion-select-option [value]="proxy"> {{ proxy }} </ion-select-option>
+    </ng-container>
+  </ion-select>
+</ion-item>

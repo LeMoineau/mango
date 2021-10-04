@@ -1,0 +1,86 @@
+
+<ion-list class="chapter-local-items-container manga-info-items-container">
+
+  <!-- Proxy Selection Bar -->
+  <manga-info-proxy-selector-bar
+     (proxySelectedChange)="proxySelectedChange($event)">
+  </manga-info-proxy-selector-bar>
+
+  <!-- Chapters List Header -->
+  <ion-item lines="full" class="items-container-title" (click)="setChaptersAllChecked()">
+    <ion-label>
+      <h2 class="items-container-title"> Chapitres disponibles </h2>
+    </ion-label>
+    <ion-checkbox
+      color="tertiary"
+      slot="end"
+      [checked]="pageInfos.allChecked"
+      *ngIf="!noChapters()">
+    </ion-checkbox>
+  </ion-item>
+
+  <ion-spinner *ngIf="InWaiting()" name="circular"></ion-spinner>
+
+  <!-- Chapitres trouvés  -->
+  <ng-container *ngIf="hasChapters()">
+    <app-chapter-list
+      [chapterList]="manga.chapters.onlineChapters[selectedProxy]"
+      [manga]="manga">
+    </app-chapter-list>
+    <!--
+    <ion-item *ngFor="let chapter of " class="section-items">
+      <ion-label>
+        <h3 *ngIf="chapter.title.length > 0" class="item-label-title"> #{{ chapter.num }} : {{ chapter.title }} </h3>
+        <h3 *ngIf="chapter.title.length <= 0" class="item-label-title"> Chapitre {{ chapter.num }} </h3>
+        <p> {{ chapter.date }} ― <i> {{ chapter.source }} </i> </p>
+      </ion-label>
+      <ion-checkbox
+        color="primary"
+        slot="end"
+        [(ngModel)]="chapter.selected">
+      </ion-checkbox>
+    </ion-item>
+    -->
+  </ng-container>
+
+  <!-- Aucun Chapitres trouvés -->
+  <ng-container *ngIf="!settingsService.getParameter('lowConnectionMode') && noChapters() && !InWaiting()">
+    <ion-item class="not-found-message">
+      <ion-icon
+        size="large"
+        [name]="pageInfos.NotFoundMessage.icon"
+        slot="start"
+        class="not-found-icon">
+      </ion-icon>
+      <ion-label>
+        <h3 class="not-found-title item-label-title"> Aucun chapitre trouvé </h3>
+        <p class="not-found-p"> {{ pageInfos.NotFoundMessage.message }} </p>
+      </ion-label>
+    </ion-item>
+    <ion-button color="primary" class="not-found-button">
+      Réessayer
+    </ion-button>
+  </ng-container>
+
+  <!-- Low connection Mode enabled -->
+  <section *ngIf="settingsService.getParameter('lowConnectionMode') && noChapters() && !InWaiting()"
+      id="low-connection-information">
+    <h2 id="low-connection-information-title"> Mode économie de connexion </h2>
+    <p>Nous chargerons du contenu depuis Internet que lorsque vous le voudrez !</p>
+    <p>Appuyer sur le bouton ci-dessus pour lancer la recherche</p>
+    <ion-button class="low-connection-button" expand="block" (click)="updateMangaInfos()">
+      Charger les chapitres
+    </ion-button>
+  </section>
+
+  <!-- Chargement des Chapitres -->
+  <ng-container *ngIf="InWaiting()">
+    <ion-item *ngFor="let skeleton of [1, 2, 3]" class="section-items-skeleton">
+      <ion-label>
+        <ion-skeleton-text animated style="width: 88%"> </ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 70%"> </ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 60%"> </ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+</ion-list>

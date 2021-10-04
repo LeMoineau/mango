@@ -1,0 +1,30 @@
+{
+  "/scantrad/": {
+    "target": "https://scantrad.net/",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {"^/scantrad" : "https://scantrad.net/"}
+  },
+  "/scan-trad.fr/": {
+    "target": "https://scan-trad.fr/",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {"^/scan-trad.fr" : "https://scan-trad.fr/"}
+  },
+  "/scanvfNet/": {
+    "target": "https://www.scan-vf.net/",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {"^/scanvfNet" : "https://www.scan-vf.net/"}
+  },
+  "/scanvfCC/": {
+    "target": "https://www.scan-vf.cc/",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {"^/scanvfCC" : "https://www.scan-vf.cc/"}
+  }
+}

@@ -1,0 +1,34 @@
+
+.manga {
+
+  --image-size: 70px;
+  --image-border-radius: 5px;
+
+  min-height: 85px;
+
+  .manga-image {
+    width: var(--image-size);
+    height: var(--image-size);
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-inline-right: 0;
+    margin-right: 15px;
+
+    img {
+      border-radius: var(--image-border-radius);
+    }
+  }
+
+  .manga-info {
+
+    .manga-title {
+      font-size: 17px;
+    }
+
+    .manga-subinfo {
+      font-size: 13px;
+    }
+
+  }
+
+}

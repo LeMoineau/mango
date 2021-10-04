@@ -1,3 +1,41 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+
+  <!-- Header -->
+  <app-global-header
+    slot="top"
+    (searchingReturn)="searchingReturn($event)"
+    #header>
+  </app-global-header>
+
+  <!-- Page Content -->
+  <ion-content>
+    <super-tabs
+      [activeTabIndex]="1"
+      (tabChange)="tabChangeEvent($event)">
+
+      <!-- Super Tabs -->
+      <super-tabs-container>
+        <super-tab>
+          <ion-content>
+            <ion-nav [root]="download" [rootParams]="thisInstance"></ion-nav>
+          </ion-content>
+        </super-tab>
+        <super-tab>
+          <ion-content>
+            <ion-nav [root]="mangatheque" [rootParams]="thisInstance"></ion-nav>
+          </ion-content>
+        </super-tab>
+        <super-tab>
+          <ion-content>
+            <ion-nav [root]="settings" [rootParams]="thisInstance"></ion-nav>
+          </ion-content>
+        </super-tab>
+      </super-tabs-container>
+
+      <!-- Footer -->
+      <app-global-footer></app-global-footer>
+
+    </super-tabs>
+  </ion-content>
+
 </ion-app>

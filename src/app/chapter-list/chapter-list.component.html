@@ -1,0 +1,17 @@
+
+<ion-list>
+  <ng-container
+      *ngFor="let tmp of [].constructor(maxChapterPermitted); let i = index">
+    <app-chapter
+      *ngIf="chapterExist(i)"
+      longTap
+      (longPress)="test($event)"
+      [chapter]="chapterList[i]"
+      [mangaParent]="manga">
+    </app-chapter>
+  </ng-container>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="showMore($event)">
+    <ion-infinite-scroll-content loadingSpinner="circular"> </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-list>
