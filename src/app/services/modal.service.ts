@@ -63,7 +63,7 @@ export class ModalService {
     await alert.present();
   }
 
-  async presentActionSheet(title: string, callbackDismiss, ...buttons) {
+  async presentActionSheet(title: string, callbackDismiss, buttons = []) {
     console.log(buttons)
     const actionSheet = await this.actionSheetController.create({
       header: `${title}`,

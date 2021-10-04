@@ -23,30 +23,6 @@
   padding-bottom: 30px;
 }
 
-.items-container-title {
-  font-size: 22px;
-}
-
-.item-label-title {
-  font-size: 18px;
-}
-
-.not-found-message {
-
-  .not-found-icon {
-    margin-inline-end: 20px;
-  }
-
-  .not-found-p {
-    margin: 0;
-    white-space: normal;
-  }
-
-  & + .not-found-button {
-    margin-top: 20px;
-  }
-}
-
 .proxy-selector-bar {
   margin: 0;
   box-sizing: border-box;

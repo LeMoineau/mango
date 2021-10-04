@@ -2,50 +2,11 @@
 <ion-list class="chapter-local-items-container manga-info-items-container">
 
   <!-- List des Chapitres dl -->
-  <ion-item lines="full" class="items-container-title" (click)="setChaptersAllChecked()">
-    <ion-label>
-      <h2 class="items-container-title"> Chapitres téléchargés </h2>
-    </ion-label>
-    <ion-checkbox
-      color="tertiary"
-      slot="end"
-      [checked]="pageInfos.allChecked"
-      *ngIf="!noChapters()">
-    </ion-checkbox>
-  </ion-item>
-
   <app-chapter-list
+    title="Chapitres téléchargés"
     [chapterList]="manga.chapters.downloadedChapters"
-    [manga]="manga">
+    [manga]="manga"
+    [showDownloadOption]="false">
   </app-chapter-list>
 
-  <!-- Aucune Chapitres trouvés -->
-  <ng-container *ngIf="noChapters()">
-    <ion-item class="not-found-message">
-      <ion-icon
-        size="large"
-        [name]="pageInfos.NotFoundMessage.icon"
-        slot="start"
-        class="not-found-icon">
-      </ion-icon>
-      <ion-label>
-        <h3 class="not-found-title item-label-title"> Aucun chapitre trouvé </h3>
-        <p class="not-found-p"> {{ this.pageInfos.NotFoundMessage.message }} </p>
-      </ion-label>
-    </ion-item>
-    <ion-button color="primary" class="not-found-button">
-      Réessayer
-    </ion-button>
-  </ng-container>
-
-  <!-- Chargement des chapitres -->
-  <ng-container *ngIf="!pageInfos.pageLoaded">
-    <ion-item *ngFor="let skeleton of [1, 2, 3]" class="section-items-skeleton">
-      <ion-label>
-        <ion-skeleton-text animated style="width: 88%"> </ion-skeleton-text>
-        <ion-skeleton-text animated style="width: 70%"> </ion-skeleton-text>
-        <ion-skeleton-text animated style="width: 60%"> </ion-skeleton-text>
-      </ion-label>
-    </ion-item>
-  </ng-container>
 </ion-list>

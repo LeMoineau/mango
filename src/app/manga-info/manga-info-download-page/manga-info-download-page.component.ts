@@ -82,10 +82,6 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
   //Specifics Methods
   private proxySelectedChange(event) {
     this.selectedProxy = event.selectedProxy;
-    console.log(this.manga)
-    console.log(this.selectedProxy)
-    console.log(this.noChapters())
-    console.log(this.InWaiting())
     if (!this.settingsService.getParameter("lowConnectionMode")) {
       this.updateMangaInfos(event.selectedProxy);
     }

@@ -16,6 +16,8 @@ export class ChapterComponent implements OnInit {
 
   @Input() chapter: DataObject;
   @Input() mangaParent: DataObject;
+  @Input() showDeleteOption: boolean = true;
+  @Input() showDownloadOption: boolean = true;
 
   constructor(
     private modalService: ModalService,
@@ -40,17 +42,21 @@ export class ChapterComponent implements OnInit {
   }
 
   private async openActionSheet(chapter: DataObject) {
-    await this.modalService.presentActionSheet(
-      `${chapter.title !== undefined ? `Chapitre ${chapter.num} - ${chapter.title}` : `Chapitre ${chapter.num}`}`,
-      (res) => {
-        console.log(res)
-      },
+    let buttons = [
       {
         text: "Lire le Chapitre",
         role: "read",
         icon: "book",
         handler: () => {
           this.readManga(chapter);
+        }
+      },
+      {
+        text: "Télécharger le Chapitre",
+        role: "download",
+        icon: "download",
+        handler: () => {
+          this.deleteChapter(chapter);
         }
       },
       {
@@ -61,6 +67,16 @@ export class ChapterComponent implements OnInit {
           this.deleteChapter(chapter);
         }
       }
+    ]
+    if (!this.showDeleteOption) buttons.splice(2, 1)
+    if (!this.showDownloadOption) buttons.splice(1, 1)
+
+    await this.modalService.presentActionSheet(
+      `${chapter.title !== undefined ? `Chapitre ${chapter.num} - ${chapter.title}` : `Chapitre ${chapter.num}`}`,
+      (res) => {
+        console.log(res)
+      },
+      buttons
     )
   }
 

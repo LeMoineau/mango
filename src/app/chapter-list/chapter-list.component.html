@@ -1,5 +1,25 @@
 
 <ion-list>
+
+  <!-- Titre header -->
+  <ion-item lines="full" class="items-container-title" (click)="setChaptersAllChecked()">
+    <ion-label>
+      <h2 class="items-container-title"> {{ InWaiting }} {{ title }} </h2>
+    </ion-label>
+    <!--
+    <ion-checkbox
+      color="tertiary"
+      slot="end"
+      [checked]="false"
+      *ngIf="!noChapters()">
+    </ion-checkbox>
+    -->
+  </ion-item>
+
+  <!-- Chargement des Chapitres -->
+  <ion-spinner *ngIf="InWaiting" name="circular"></ion-spinner>
+
+  <!-- Liste de chapitre -->
   <ng-container
       *ngFor="let tmp of [].constructor(maxChapterPermitted); let i = index">
     <app-chapter
@@ -7,11 +27,47 @@
       longTap
       (longPress)="test($event)"
       [chapter]="chapterList[i]"
-      [mangaParent]="manga">
+      [mangaParent]="manga"
+      [showDeleteOption]=showDeleteOption
+      [showDownloadOption]="showDownloadOption">
     </app-chapter>
   </ng-container>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="showMore($event)">
+  <!-- Aucun Chapitres trouvés -->
+  <ng-container *ngIf="noChapters() && !InWaiting">
+    <ion-item class="not-found-message">
+      <ion-icon
+        size="large"
+        [name]="NotFoundMessage.icon"
+        slot="start"
+        class="not-found-icon">
+      </ion-icon>
+      <ion-label>
+        <h3 class="not-found-title item-label-title"> Aucun chapitre trouvé </h3>
+        <p class="not-found-p"> {{ NotFoundMessage.message }} </p>
+      </ion-label>
+    </ion-item>
+    <ion-button color="primary" class="not-found-button">
+      Réessayer
+    </ion-button>
+  </ng-container>
+
+  <!-- Chargement des Chapitres -->
+  <ng-container *ngIf="InWaiting">
+    <ion-item *ngFor="let skeleton of [1, 2, 3]" class="section-items-skeleton">
+      <ion-label>
+        <ion-skeleton-text animated style="width: 88%"> </ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 70%"> </ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 60%"> </ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+
+  <!-- Scroll infini -->
+  <ion-infinite-scroll
+      *ngIf="maxChapterPermitted <= nbChapters()"
+      threshold="100px"
+      (ionInfinite)="showMore($event)">
     <ion-infinite-scroll-content loadingSpinner="circular"> </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-list>
