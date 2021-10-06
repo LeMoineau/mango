@@ -8,16 +8,17 @@
     <p> {{ chapter.date }} ― <i> {{ chapter.source }} </i> </p>
   </ion-label>
   <ion-icon
+    *ngIf="!isInCheckMode"
     button
     (click)="openActionSheet(chapter)"
     slot="end"
     name="ellipsis-vertical">
   </ion-icon>
-  <!--
   <ion-checkbox
+    *ngIf="isInCheckMode"
     color="primary"
     slot="end"
-    [(ngModel)]="chapter.selected">
+    (ionChange)="toggleChecked()"
+    [(ngModel)]="isChecked">
   </ion-checkbox>
-  -->
 </ion-item>

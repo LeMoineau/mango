@@ -2,18 +2,19 @@
 <ion-list>
 
   <!-- Titre header -->
-  <ion-item lines="full" class="items-container-title" (click)="setChaptersAllChecked()">
+  <ion-item lines="full" class="items-container-title">
     <ion-label>
-      <h2 class="items-container-title"> {{ InWaiting }} {{ title }} </h2>
+      <h2 class="items-container-title"> {{ title }} </h2>
     </ion-label>
-    <!--
-    <ion-checkbox
-      color="tertiary"
-      slot="end"
-      [checked]="false"
-      *ngIf="!noChapters()">
-    </ion-checkbox>
-    -->
+    <ng-container *ngIf="isInCheckMode()">
+      <ion-checkbox
+        *ngIf="!noChapters()"
+        color="tertiary"
+        slot="end"
+        [checked]="false"
+        (ionChange)="changeCheckedAll($event)">
+      </ion-checkbox>
+    </ng-container>
   </ion-item>
 
   <!-- Chargement des Chapitres -->
@@ -25,11 +26,14 @@
     <app-chapter
       *ngIf="chapterExist(i)"
       longTap
-      (longPress)="test($event)"
+      (longPress)="toggleCheckMode($event)"
       [chapter]="chapterList[i]"
       [mangaParent]="manga"
       [showDeleteOption]=showDeleteOption
-      [showDownloadOption]="showDownloadOption">
+      [showDownloadOption]="showDownloadOption"
+      [isInCheckMode]="isInCheckMode()"
+      [isChecked]="checkedChapter.includes(chapterList[i])"
+      (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])">
     </app-chapter>
   </ng-container>
 

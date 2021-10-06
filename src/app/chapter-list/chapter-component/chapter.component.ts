@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { MangaReaderComponent } from './../../manga-reader/manga-reader.component';
 
@@ -18,6 +18,10 @@ export class ChapterComponent implements OnInit {
   @Input() mangaParent: DataObject;
   @Input() showDeleteOption: boolean = true;
   @Input() showDownloadOption: boolean = true;
+  @Input() isInCheckMode: boolean = false;
+
+  @Output() checkingChange = new EventEmitter<DataObject>();
+  @Input() isChecked: boolean = false;
 
   constructor(
     private modalService: ModalService,
@@ -25,6 +29,14 @@ export class ChapterComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  //Basics Methods
+  private toggleChecked() {
+    this.checkingChange.emit({
+      eventName: "checkingChapterChange",
+      isChecked: this.isChecked
+    })
+  }
 
   //Specifics Methods
   private readManga(chapter: DataObject) {

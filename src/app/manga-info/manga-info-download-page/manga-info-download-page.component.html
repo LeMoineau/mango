@@ -13,7 +13,9 @@
       [chapterList]="manga.chapters.onlineChapters[selectedProxy]"
       [manga]="manga"
       [showDeleteOption]="false"
-      [InWaiting]="InWaiting()">
+      [InWaiting]="InWaiting()"
+      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'download-page'})"
+      (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
     </app-chapter-list>
   </ng-container>
 

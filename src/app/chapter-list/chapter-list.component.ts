@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { DataObject, getRandomNotFoundMessage } from './../services/objects';
 
@@ -10,7 +10,7 @@ import { DataObject, getRandomNotFoundMessage } from './../services/objects';
 })
 export class ChapterListComponent implements OnInit {
 
-  @Input() chapterList: DataObject;
+  @Input() chapterList: DataObject[];
   @Input() manga: DataObject;
 
   @Input() title: string = "Liste de Chapitres";
@@ -20,7 +20,13 @@ export class ChapterListComponent implements OnInit {
 
   private maxChapterPermitted: number = 10;
   private offset: number = 10;
+
   private NotFoundMessage: DataObject = null;
+
+  private checkedChapter: DataObject[] = [];
+  private checkMode: boolean = false;
+  @Output() checkModeChanged = new EventEmitter<DataObject>();
+  @Output() updateCheckedChapterList = new EventEmitter<DataObject>();
 
   constructor() {
     this.NotFoundMessage = getRandomNotFoundMessage();
@@ -28,18 +34,7 @@ export class ChapterListComponent implements OnInit {
 
   ngOnInit() {}
 
-  private test(event) {
-    console.log(event)
-  }
-
   //Basics Methods
-  private showMore(event) {
-    if (this.chapterList.length >= this.maxChapterPermitted) {
-      this.maxChapterPermitted += this.offset;
-    }
-    event.target.complete();
-  }
-
   private chapterExist(index: number) {
     return (this.chapterList !== undefined && this.chapterList.length > index);
   }
@@ -50,6 +45,48 @@ export class ChapterListComponent implements OnInit {
 
   private nbChapters() {
     return this.chapterList === undefined ? 0 : this.chapterList.length;
+  }
+
+  private toggleCheckMode() {
+    this.checkMode = !this.checkMode;
+    this.checkModeChanged.emit({
+      eventName: "checkModeChanged",
+      checkMode: this.checkMode
+    })
+  }
+
+  public isInCheckMode() {
+    return this.checkMode;
+  }
+
+  //Specifics Methods
+  private showMore(event) {
+    if (this.chapterList.length >= this.maxChapterPermitted) {
+      this.maxChapterPermitted += this.offset;
+    }
+    event.target.complete();
+  }
+
+  public changeCheckedChapter(isChecked: boolean, chapter: DataObject) {
+    if (!isChecked && this.checkedChapter.includes(chapter)) {
+      let index = this.checkedChapter.findIndex(c => c === chapter);
+      if (index !== -1) {
+        this.checkedChapter.splice(index, 1);
+      }
+    } else if (isChecked && !this.checkedChapter.includes(chapter)) {
+      this.checkedChapter.push(chapter)
+    }
+    this.updateCheckedChapterList.emit({
+      eventName: "updateCheckedChapterList",
+      checkedChapter: this.checkedChapter
+    })
+  }
+
+  private changeCheckedAll(event) {
+    for (let chapter of this.chapterList) {
+      this.changeCheckedChapter(event.detail.checked, chapter);
+    }
+    console.log(this.checkedChapter)
   }
 
 }

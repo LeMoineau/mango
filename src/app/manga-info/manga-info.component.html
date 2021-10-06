@@ -31,14 +31,16 @@
 
     <ion-slide class="manga-info-slide">
       <manga-info-local-page
-        [manga]="manga">
+        [manga]="manga"
+        (dataToMangaInfo)="dataToMangaInfo($event)">
       </manga-info-local-page>
     </ion-slide>
 
     <ion-slide class="manga-info-slide">
       <manga-info-download-page
         [manga]="manga"
-        (newMangaInfoLoaded)="newMangaInfoLoaded($event)">
+        (newMangaInfoLoaded)="newMangaInfoLoaded($event)"
+        (dataToMangaInfo)="dataToMangaInfo($event)">
       </manga-info-download-page>
     </ion-slide>
   </ion-slides>
@@ -48,13 +50,15 @@
       <ion-fab-button
           (click)="editInfos()"
           color="success">
-        <ion-icon [name]="getEditionButtonIcon()" style="color: white"></ion-icon>
+        <ion-icon
+          [name]="landingPage !== undefined && landingPage.isInEdition() ? 'save' : 'pencil'"
+          style="color: white">
+        </ion-icon>
       </ion-fab-button>
     </ion-fab>
     <ion-fab id="delete-button" class="fab-button" vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button
           (click)="deleteSelectedChapters()"
-          [disabled]="localPage !== undefined ? localPage.noChapters() : true"
           color="danger">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>

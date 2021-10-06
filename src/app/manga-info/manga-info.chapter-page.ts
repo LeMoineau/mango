@@ -7,6 +7,8 @@ import { DataObject, getRandomNotFoundMessage } from './../services/objects';
 
 export abstract class MangaInfoChapterPage extends MangaInfoPage {
 
+  protected checkedChapter: DataObject[] = [];
+
   constructor() {
     super();
   }
@@ -25,19 +27,12 @@ export abstract class MangaInfoChapterPage extends MangaInfoPage {
     return (this.getChapters() !== undefined && this.getChapters().length > 0)
   }
 
-  protected setChaptersAllChecked() {
-    if (this.hasChapters()) {
-      this.pageInfos.allChecked = !this.pageInfos.allChecked;
-      this.setChapters(this.getChapters().map((chap) => {
-        let tmp = chap;
-        tmp.selected = this.pageInfos.allChecked;
-        return tmp;
-      }));
-    }
+  protected setSelectedChapters(checkedChapter: DataObject[]) {
+    this.checkedChapter = checkedChapter;
   }
 
   public getSelectedChapters() {
-    return this.getChapters().filter(chap => chap.selected);
+    return this.checkedChapter;
   }
 
 }

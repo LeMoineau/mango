@@ -36,7 +36,7 @@ export class MangaInfoComponent implements OnInit {
 
   private showDeleteMangaOption: boolean = false;
 
-  manga: DataObject = {}
+  public manga: DataObject = {}
 
   constructor(
     private modalController: ModalController,
@@ -140,8 +140,10 @@ export class MangaInfoComponent implements OnInit {
 
   private async deleteSelectedChapters() {
     let selectedChapters = this.getSelectedChapters(this.localPage);
+    console.log(selectedChapters)
     for (let chapter of selectedChapters) {
-      //this.localPage.deleteChapter(chapter);
+      await this.storageService.removeChapterDownload(this.manga.parsedTitle, chapter);
+      this.manga.downloadedChapters = await this.storageService.getChaptersDownload(this.manga.parsedTitle);
     }
   }
 
@@ -149,8 +151,14 @@ export class MangaInfoComponent implements OnInit {
     this.landingPage.toggleEdition();
   }
 
-  private getEditionButtonIcon() {
-    return this.landingPage !== undefined && this.landingPage.isInEdition() ? "save" : "pencil";
+  private dataToMangaInfo(event) {
+    if (event.sender === "download-page") {
+      if (event.event.eventName === "checkModeChanged") {
+
+      }
+    } else if (event.sender === "local-page") {
+
+    }
   }
 
   //Slide Managing Method
