@@ -27,6 +27,7 @@ import { DownloadService } from './download.service';
 import { ModalService } from './modal.service';
 import { TagsService } from './tags.service';
 import { ProxyService } from './proxy.service';
+import { FabButtonService } from './fab-button.service';
 
 export const DeclaredComponents = [
   DownloadComponent,
@@ -56,5 +57,6 @@ export const ProvidedServices = [
   DownloadService,
   ModalService,
   TagsService,
-  ProxyService
+  ProxyService,
+  FabButtonService
 ]

@@ -14,6 +14,7 @@ import { SettingsService } from './../services/settings.service';
 import { StorageService } from './../services/storage.service';
 import { DataObject, MangaStructure, getRandomNotFoundMessage } from './../services/objects';
 import { ModalService } from './../services/modal.service';
+import { FabButtonService } from './../services/fab-button.service';
 
 @Component({
   selector: 'app-manga-info',
@@ -43,7 +44,8 @@ export class MangaInfoComponent implements OnInit {
     private mangaService: MangaService,
     private settingsService: SettingsService,
     private storageService: StorageService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private fabButtonService: FabButtonService
   ) { }
 
   ngOnInit() { }
@@ -70,6 +72,7 @@ export class MangaInfoComponent implements OnInit {
   private async init() {
     this.manga = concatener(this.manga, {...MangaStructure});
 
+    //Wait pages loading
     await this.waitViewChildInit("downloadPage");
     await this.waitViewChildInit("landingPage");
 
@@ -93,14 +96,26 @@ export class MangaInfoComponent implements OnInit {
       this.downloadPage.addOnlineChapters(proxy, []);
       this.landingPage.updateInfos();
     }
-    console.log(this.manga)
   }
 
   async ionViewDidEnter() {
     this.slidesManager.pageCharged = true;
 
+    //set fab-button click methods
+    this.fabButtonService.setFabParameterByParameter("forPage", 0, "onClick", () => {
+      this.editInfos()
+    })
+    this.fabButtonService.setFabParameterByParameter("forPage", 1, "onClick", () => {
+      this.deleteSelectedChapters()
+    })
+    this.fabButtonService.setFabParameterByParameter("forPage", 2, "onClick", () => {
+      this.downloadSelectedChapters()
+    })
+
+    //Wait ion-slides loading
     this.waitViewChildInit("slides").then(async (slides) => {
       if (this.baseActiveSlide !== 0) await this.slideTo(this.baseActiveSlide);
+      this.fabButtonService.updateCurrentPage(this.baseActiveSlide);
     })
   }
 
@@ -152,12 +167,15 @@ export class MangaInfoComponent implements OnInit {
   }
 
   private dataToMangaInfo(event) {
-    if (event.sender === "download-page") {
+    console.log(event)
+    if (event.event !== undefined) {
       if (event.event.eventName === "checkModeChanged") {
-
+        this.fabButtonService.toggleCurrentFabVisibility(event.event.checkMode)
       }
-    } else if (event.sender === "local-page") {
-
+    } else {
+      if (event.eventName === "toggleEdition") {
+        this.fabButtonService.toggleCurrentFabVisibility(event.inEdition)
+      }
     }
   }
 
@@ -171,30 +189,8 @@ export class MangaInfoComponent implements OnInit {
     await this.slides.slideTo(index);
   }
 
-  private async updateFabButtonVisible() {
-    await this.waitViewChildInit("slides");
-    let allFabButtons = ["download-button", "delete-button", "edit-button"]
-    let fabButtonsActive = [];
-    switch (await this.getActiveSlideIndex()) {
-      case 0:
-        fabButtonsActive = ["edit-button"]
-        break;
-      case 1:
-        fabButtonsActive = ["delete-button"]
-        break;
-      case 2:
-        fabButtonsActive = ["download-button"]
-        break;
-      default:
-        break;
-    }
-    for (let fab of allFabButtons) {
-      if (fabButtonsActive.includes(fab)) {
-        document.getElementById(fab).style.display = "block";
-      } else {
-        document.getElementById(fab).style.display = "none";
-      }
-    }
+  private async slideChange() {
+    this.fabButtonService.updateCurrentPage(await this.getActiveSlideIndex());
   }
 
   //Modal & Popover Method

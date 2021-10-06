@@ -17,18 +17,12 @@
   <ion-list id="information-text-items-container" class="manga-info-items-container">
 
     <!-- Header -->
-    <ion-item lines="full" class="items-container-title">
+    <ion-item lines="full" class="items-container-title"
+        (click)="toggleEdition()">
       <ion-label>
         <h2 class="items-container-title all-centered-title">
           {{ manga.title }}
-          <ng-container *ngFor="let tag of tagsService.iter()">
-            <ion-icon
-              *ngIf="tagsService.getTagInfo(tag, 'state')"
-              [name]="tagsService.getTagIcon(tag)"
-              [color]="tagsService.getTagInfo(tag, 'color')"
-              slot="start">
-            </ion-icon>
-          </ng-container>
+          <ion-icon name="pencil"></ion-icon>
         </h2>
       </ion-label>
     </ion-item>
@@ -36,6 +30,26 @@
     <ion-spinner *ngIf="InWaiting()" name="circular"></ion-spinner>
 
     <!-- Les infos -->
+    <ion-item
+        class="information-text-lines">
+      <ion-input
+        readonly="true"
+        value="Tags"
+        position="fixed"
+        slot="start"
+        class="info-label-entitle infokey-input">
+      </ion-input>
+      <ion-label>
+        <ng-container *ngFor="let tag of tagsService.iter()">
+          <ion-icon
+            *ngIf="tagsService.getTagInfo(tag, 'state')"
+            [name]="tagsService.getTagIcon(tag)"
+            [color]="tagsService.getTagInfo(tag, 'color')"
+            slot="start">
+          </ion-icon>
+        </ng-container>
+      </ion-label>
+    </ion-item>
     <ng-container *ngFor="let info of manga.infos.iter">
       <ion-item
           class="information-text-lines">

@@ -35,8 +35,11 @@
   font-size: 22px;
 
   ion-icon {
-    margin-left: 15px;
-    margin-inline-start: 15px;
+    margin: 0 15px;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 
 }

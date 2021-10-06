@@ -18,14 +18,15 @@
 <ion-content id="global-container">
   <ion-slides
     *ngIf="slidesManager.pageCharged"
-    (ionSlideWillChange)="updateFabButtonVisible()"
+    (ionSlideWillChange)="slideChange()"
     id="global-slides-container"
     #slides>
 
     <!-- Information sur le manga -->
     <ion-slide class="manga-info-slide">
       <manga-info-landing-page
-        [manga]="manga">
+        [manga]="manga"
+        (dataToMangaInfo)="dataToMangaInfo($event)">
       </manga-info-landing-page>
     </ion-slide>
 
@@ -46,29 +47,21 @@
   </ion-slides>
 
   <div id="fab-button-container">
-    <ion-fab id="edit-button" class="fab-button" vertical="bottom" horizontal="end" slot="fixed" style="display: block">
+    <ion-fab
+        *ngFor="let fab of fabButtonService.fabs()"
+        [id]="fab.fabName"
+        class="fab-button"
+        vertical="bottom"
+        horizontal="end"
+        slot="fixed"
+        [ngStyle]="{'display': fab.visible && fab.forPage === fabButtonService.getCurrentPage() ? 'block' : 'none'}">
       <ion-fab-button
-          (click)="editInfos()"
-          color="success">
+          (click)="fab.onClick()"
+          [color]="fab.color">
         <ion-icon
-          [name]="landingPage !== undefined && landingPage.isInEdition() ? 'save' : 'pencil'"
+          [name]="fab.iconName"
           style="color: white">
         </ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <ion-fab id="delete-button" class="fab-button" vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button
-          (click)="deleteSelectedChapters()"
-          color="danger">
-        <ion-icon name="trash-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <ion-fab id="download-button" class="fab-button" vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button
-          (click)="downloadSelectedChapters()"
-          [disabled]="downloadPage !== undefined ? downloadPage.noChapters() : true"
-          color="primary">
-        <ion-icon name="download-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </div>

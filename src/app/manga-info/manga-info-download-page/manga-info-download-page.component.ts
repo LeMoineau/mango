@@ -29,7 +29,6 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
 
   ngOnInit() {
     this.init();
-    console.log(this.noChapters())
   }
 
   //Basics Methods
@@ -59,7 +58,6 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
   public addOnlineChapters(proxy: string, onlineChapters: DataObject[], endWaiting: boolean = true) {
     this.selectedProxy = proxy;
     this.setChapters(onlineChapters)
-    console.log(this.manga)
     if (endWaiting) this.endWaiting();
   }
 

@@ -86,13 +86,17 @@ export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnIn
     return this.inEdition;
   }
 
-  public toggleEdition() {
+  public async toggleEdition() {
+    console.log("coucou")
     if (this.isInEdition()) {
-      this.editionEnd();
-      console.log(this.manga)
+      await this.editionEnd();
     } else {
       this.editionStart();
     }
+    this.passInformationToMangaInfo({
+      eventName: "toggleEdition",
+      inEdition: this.isInEdition()
+    })
   }
 
   private addNewInformationInEdition() {
