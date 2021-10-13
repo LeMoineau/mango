@@ -6,8 +6,9 @@
 <ion-content>
 
   <!-- Message lowConnectionMode -->
-  <section *ngIf="getLowConnectionMode() && mangaList.newestChapters.length <= 0 && mangaList.recentChapters.length <= 0"
-  id="low-connection-information">
+  <section
+      *ngIf="getLowConnectionMode() && mangaList.newestChapters.length <= 0 && mangaList.recentChapters.length <= 0 && searchingResult.length <= 0"
+      id="low-connection-information">
     <h2 id="low-connection-information-title"> Mode économie de connexion </h2>
     <p>Nous chargerons du contenu depuis Internet que lorsque vous le voudrez !</p>
     <p>Les illustrations des mangas sont aussi cachées pour minimiser au maximum l'utilisation de donnée.</p>
@@ -17,7 +18,9 @@
   <app-chapter-list
     title="Recherche"
     [mangas]="searchingResult"
+    affichage="sourced-manga"
     [showTitleIfNoChapter]="false">
+      <ion-icon button name="close" (click)="resetSearchingResult()"></ion-icon>
   </app-chapter-list>
 
   <!-- Nouveaux Chapitres -->

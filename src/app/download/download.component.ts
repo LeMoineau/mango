@@ -63,16 +63,23 @@ export class DownloadComponent extends LoadingModule implements OnInit {
   }
 
   public addSearchingResult(result: DataObject) {
-    if (result.data !== null && result.data.title.length > 0) {
-      delete result.data["chapters"]
-      result.data.infos["source"] = result.source
-      this.searchingResult.unshift(result);
+    console.log(result)
+    if (result.beginNewSearch === true) {
+      this.resetSearchingResult();
+    } else if (result.data !== null && result.data !== undefined && result.data.title !== undefined && result.data.title.length > 0) {
+      let manga = result.data;
+      manga.infos.source = result.source;
+      this.searchingResult.unshift(manga);
       console.log(this.searchingResult)
     }
 
     if (result.lastResearch) {
       this.endWaiting()
     }
+  }
+
+  private resetSearchingResult() {
+    this.searchingResult = [];
   }
 
 }

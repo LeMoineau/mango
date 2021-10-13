@@ -27,7 +27,7 @@ export class ChapterListComponent implements OnInit {
   @Input() modalOptionsToShow: string[] = ["read", "delete", "download"];
   @Input() InWaiting: boolean = false;
   @Input() showTitleIfNoChapter: boolean = true;
-  @Input() affichageChapter: string = "normal";
+  @Input() affichage: string = "normal";
   @Input() sortedBy: string = "nothing";
   @Input() callbackRefresh: any = undefined;
   @Input() isCheckable: boolean = true;
@@ -76,11 +76,13 @@ export class ChapterListComponent implements OnInit {
   }
 
   private toggleCheckMode() {
-    this.checkMode = !this.checkMode;
-    this.checkModeChanged.emit({
-      eventName: "checkModeChanged",
-      checkMode: this.checkMode
-    })
+    if (this.isCheckable) {
+      this.checkMode = !this.checkMode;
+      this.checkModeChanged.emit({
+        eventName: "checkModeChanged",
+        checkMode: this.checkMode
+      })
+    }
   }
 
   public isInCheckMode() {

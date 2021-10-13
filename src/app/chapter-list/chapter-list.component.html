@@ -10,6 +10,9 @@
     <ion-label>
       <h2 class="items-container-title"> {{ title }} </h2>
     </ion-label>
+    <ng-content *ngIf="!isInCheckMode()">
+      <!-- Ajout de bouton sur le header -->
+    </ng-content>
     <ng-container *ngIf="isInCheckMode()">
       <ion-checkbox
         *ngIf="!noChapters()"
@@ -39,7 +42,7 @@
         [isCheckable]="isCheckable"
         [isInCheckMode]="isInCheckMode()"
         [isChecked]="checkedChapter.includes(chapterList[i])"
-        [affichage]="affichageChapter"
+        [affichage]="affichage"
         (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])">
       </app-chapter>
     </ng-container>
@@ -50,6 +53,7 @@
     <ion-list *ngFor="let manga of mangas">
       <app-manga
         [manga]="manga"
+        [affichage]="affichage"
         baseActiveSlide="2">
       </app-manga>
     </ion-list>

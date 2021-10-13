@@ -17,10 +17,7 @@ import { TagsService } from './../services/tags.service';
 export class MangaComponent implements OnInit {
 
   @Input() manga: DataObject;
-  @Input() affichage: string = "new-chapter";
-  /**
-   * affichage = ["new-chapter", "mangatheque"]
-   */
+  @Input() affichage: string = "normal";
   @Input() baseActiveSlide: number = 0;
 
   @Output() mangaInfoClose = new EventEmitter();
@@ -39,7 +36,7 @@ export class MangaComponent implements OnInit {
   }
 
   private getSubinfoString() {
-    if (this.affichage === "new-chapter") {
+    if (this.affichage === "normal") {
       return `${this.manga.chapter.title.length > 0 ?
         `#${this.manga.chapter.num} - ${this.manga.chapter.title}` : `Chapitre ${this.manga.chapter.num}`}`;
     } else if (this.affichage === "mangatheque") {
