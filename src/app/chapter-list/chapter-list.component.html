@@ -2,7 +2,10 @@
 <ion-list>
 
   <!-- Titre header -->
-  <ion-item lines="full" class="items-container-title">
+  <ion-item
+      *ngIf="showTitleIfNoChapter || !noChapters()"
+      lines="full"
+      class="items-container-title">
     <ion-label>
       <h2 class="items-container-title"> {{ title }} </h2>
     </ion-label>
@@ -29,31 +32,33 @@
       (longPress)="toggleCheckMode($event)"
       [chapter]="chapterList[i]"
       [mangaParent]="manga"
-      [showDeleteOption]=showDeleteOption
-      [showDownloadOption]="showDownloadOption"
+      [modalOptionsToShow]="modalOptionsToShow"
       [isInCheckMode]="isInCheckMode()"
       [isChecked]="checkedChapter.includes(chapterList[i])"
+      [affichage]="affichageChapter"
       (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])">
     </app-chapter>
   </ng-container>
 
   <!-- Aucun Chapitres trouvés -->
-  <ng-container *ngIf="noChapters() && !InWaiting">
-    <ion-item class="not-found-message">
-      <ion-icon
-        size="large"
-        [name]="NotFoundMessage.icon"
-        slot="start"
-        class="not-found-icon">
-      </ion-icon>
-      <ion-label>
-        <h3 class="not-found-title item-label-title"> Aucun chapitre trouvé </h3>
-        <p class="not-found-p"> {{ NotFoundMessage.message }} </p>
-      </ion-label>
-    </ion-item>
-    <ion-button color="primary" class="not-found-button">
-      Réessayer
-    </ion-button>
+  <ng-container *ngIf="showTitleIfNoChapter">
+    <ng-container *ngIf="noChapters() && !InWaiting">
+      <ion-item class="not-found-message">
+        <ion-icon
+          size="large"
+          [name]="NotFoundMessage.icon"
+          slot="start"
+          class="not-found-icon">
+        </ion-icon>
+        <ion-label>
+          <h3 class="not-found-title item-label-title"> Aucun chapitre trouvé </h3>
+          <p class="not-found-p"> {{ NotFoundMessage.message }} </p>
+        </ion-label>
+      </ion-item>
+      <ion-button color="primary" class="not-found-button">
+        Réessayer
+      </ion-button>
+    </ng-container>
   </ng-container>
 
   <!-- Chargement des Chapitres -->

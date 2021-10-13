@@ -216,13 +216,15 @@ export class StorageService {
     let chaptersDownload = await this.get("chaptersDownload");
     if (chaptersDownload.iter.includes(mangaParsedTitle)) {
       const critereSelection = ["num", "source"];
-      let index = chaptersDownload.chapters[mangaParsedTitle].find(c => {
+      let index = chaptersDownload.chapters[mangaParsedTitle].findIndex(c => {
         for (let critere of critereSelection) {
           if (c[critere] !== chapterInfos[critere]) return false;
         }
         return true;
       })
-      chaptersDownload.chapters[mangaParsedTitle].splice(index, 1);
+      if (index !== -1) {
+        chaptersDownload.chapters[mangaParsedTitle].splice(index, 1);
+      }
       if (chaptersDownload.chapters[mangaParsedTitle].length <= 0) {
         index = chaptersDownload.iter.indexOf(mangaParsedTitle);
         chaptersDownload.iter.splice(index, 1);

@@ -148,17 +148,29 @@ export class MangaInfoComponent implements OnInit {
     this.slideTo(1); //1 = local chapter page
     for (let chapter of selectedChapters) {
       delete chapter['selected'];
-      await this.mangaService.downloadChapter(this.manga.parsedTitle, chapter);
+      await this.mangaService.downloadChapter(this.manga.parsedTitle, chapter, (progress) => {
+        console.log(progress)
+        if (progress.action === "length") {
+          this.localPage.addInDownloadingChapter(progress.chapter, progress.length);
+        } else if (progress.action === "request" || progress.action === "download") {
+          this.localPage.progressInDownloadingChapter(progress);
+        } else if (progress.action === "end") {
+          this.localPage.removeInDownloadingChapter(progress.chapter);
+        } else {
+          console.log(progress);
+        }
+      });
       //this.addDownloadedChaptersToMangaStructure(chapter)
     }
   }
 
   private async deleteSelectedChapters() {
     let selectedChapters = this.getSelectedChapters(this.localPage);
+    console.log("selected chapters:")
     console.log(selectedChapters)
     for (let chapter of selectedChapters) {
       await this.storageService.removeChapterDownload(this.manga.parsedTitle, chapter);
-      this.manga.downloadedChapters = await this.storageService.getChaptersDownload(this.manga.parsedTitle);
+      this.localPage.updateDownloadedChapters();
     }
   }
 

@@ -1,12 +1,22 @@
 
-<ion-item
-    class="section-items">
+<ion-item class="section-items">
+
   <ion-label
       (click)="readManga(chapter)">
-    <h3 *ngIf="chapter.title.length > 0" class="item-label-title"> #{{ chapter.num }} : {{ chapter.title }} </h3>
+    <h3 *ngIf="chapter.title.length > 0" class="item-label-title"> #{{ chapter.num }} - {{ chapter.title }} </h3>
     <h3 *ngIf="chapter.title.length <= 0" class="item-label-title"> Chapitre {{ chapter.num }} </h3>
-    <p> {{ chapter.date }} ― <i> {{ chapter.source }} </i> </p>
+
+    <ng-container *ngIf="affichage === 'normal'">
+      <p> {{ chapter.date }} ― <i> {{ chapter.source }} </i> </p>
+    </ng-container>
+    <ng-container *ngIf="affichage === 'downloading'">
+      <p> Progression: {{ chapter.progress }}% <i> ({{ chapter.lastStep }}) </i> </p>
+      <div class="progress-bar-container">
+        <div class="progress-bar" [ngStyle]="{'width': chapter.progress + '%'}"></div>
+      </div>
+    </ng-container>
   </ion-label>
+
   <ion-icon
     *ngIf="!isInCheckMode"
     button
@@ -14,8 +24,9 @@
     slot="end"
     name="ellipsis-vertical">
   </ion-icon>
+
   <ion-checkbox
-    *ngIf="isInCheckMode"
+    *ngIf="isInCheckMode && isCheckable"
     color="primary"
     slot="end"
     (ionChange)="toggleChecked()"

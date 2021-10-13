@@ -1,12 +1,26 @@
 
 <ion-list class="chapter-local-items-container manga-info-items-container">
 
+  <!-- List des Chapitres en cours de dl -->
+  <app-chapter-list
+    title="En cours de téléchargement"
+    [chapterList]="inDownloadingChapters"
+    [manga]="manga"
+    [modalOptionsToShow]="['read', 'delete']"
+    sortedBy="num"
+    affichageChapter="downloading"
+    [showTitleIfNoChapter]="false"
+    (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
+    (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
+  </app-chapter-list>
+
   <!-- List des Chapitres dl -->
   <app-chapter-list
     title="Chapitres téléchargés"
     [chapterList]="manga.chapters.downloadedChapters"
     [manga]="manga"
-    [showDownloadOption]="false"
+    [modalOptionsToShow]="['read', 'delete']"
+    sortedBy="num"
     (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
     (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
   </app-chapter-list>

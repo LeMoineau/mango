@@ -16,17 +16,21 @@ export class ChapterComponent implements OnInit {
 
   @Input() chapter: DataObject;
   @Input() mangaParent: DataObject;
-  @Input() showDeleteOption: boolean = true;
-  @Input() showDownloadOption: boolean = true;
-  @Input() isInCheckMode: boolean = false;
+  @Input() progress: DataObject;
 
   @Output() checkingChange = new EventEmitter<DataObject>();
   @Input() isChecked: boolean = false;
 
+  //Options
+  @Input() affichage: string = "normal"; //<normal|downloading>
+  @Input() modalOptionsToShow: string[] = ["read", "delete", "download"];
+  @Input() isInCheckMode: boolean = false;
+  @Input() isCheckable: boolean = true;
+
   constructor(
     private modalService: ModalService,
     private mangaService: MangaService
-  ) {}
+  ) { }
 
   ngOnInit() {}
 
@@ -54,7 +58,7 @@ export class ChapterComponent implements OnInit {
   }
 
   private async openActionSheet(chapter: DataObject) {
-    let buttons = [
+    let bankButtons = [
       {
         text: "Lire le Chapitre",
         role: "read",
@@ -80,8 +84,13 @@ export class ChapterComponent implements OnInit {
         }
       }
     ]
-    if (!this.showDeleteOption) buttons.splice(2, 1)
-    if (!this.showDownloadOption) buttons.splice(1, 1)
+    let buttons = []
+    for (let role of this.modalOptionsToShow) {
+      let b = bankButtons.find(b => b.role === role);
+      if (b !== undefined) {
+        buttons.push(b);
+      }
+    }
 
     await this.modalService.presentActionSheet(
       `${chapter.title !== undefined ? `Chapitre ${chapter.num} - ${chapter.title}` : `Chapitre ${chapter.num}`}`,

@@ -19,6 +19,8 @@ export class MangaInfoLocalPageComponent extends MangaInfoChapterPage implements
 
   //private manga: DataObject[]
 
+  private inDownloadingChapters: DataObject[] = [];
+
   constructor(
     private storageService: StorageService,
     private modalService: ModalService,
@@ -27,27 +29,13 @@ export class MangaInfoLocalPageComponent extends MangaInfoChapterPage implements
     super();
   }
 
-  ngOnInit() {
-    this.init();
+  async ngOnInit() {
+    await this.updateDownloadedChapters();
   }
 
   //Basics Methods
-  private async init() {
-    let downloadedChapters = await this.storageService.getChaptersDownload(this.manga.parsedTitle);
-    if (downloadedChapters !== undefined) {
-      this.addDownloadedChapters(downloadedChapters);
-    }
-  }
-
-  public addDownloadedChapters(chapters: DataObject[]) {
-    chapters.map((chap) => {
-      let tmp = chap;
-      tmp.selected = false;
-      return tmp
-    })
-    if (this.getChapters() !== undefined && this.manga.chapters.downloadedChapters !== chapters) {
-      this.manga.chapters.downloadedChapters = this.manga.chapters.downloadedChapters.concat(chapters || []);
-    }
+  public async updateDownloadedChapters() {
+    this.manga.chapters.downloadedChapters = await this.storageService.getChaptersDownload(this.manga.parsedTitle);
   }
 
   public dismiss(): void {
@@ -64,5 +52,35 @@ export class MangaInfoLocalPageComponent extends MangaInfoChapterPage implements
   }
 
   //Specifics Methods
+  public addInDownloadingChapter(chapter: DataObject, length: number) {
+    if (!this.inDownloadingChapters.includes(chapter)) {
+      this.inDownloadingChapters.push({
+        title: chapter.title,
+        num: chapter.num,
+        length: length*2,
+        currentLength: 0,
+        progress: 0,
+        lastStep: "initialisation"
+      })
+      console.log(this.inDownloadingChapters)
+    }
+  }
+
+  public progressInDownloadingChapter(progress: DataObject) {
+    let target = this.inDownloadingChapters.find(c => c.title === progress.chapter.title && c.num === progress.chapter.num);
+    if (target !== undefined) {
+      target.currentLength += 1;
+      target.progress = Math.round(target.currentLength / target.length * 100);
+      target.lastStep = `${progress.action} of page ${progress.page || '???'}`;
+    }
+  }
+
+  public async removeInDownloadingChapter(chapter: DataObject) {
+    let targetIndex = this.inDownloadingChapters.findIndex(c => c.title === chapter.title && c.num === chapter.num);
+    if (targetIndex !== -1) {
+      this.inDownloadingChapters.splice(targetIndex, 1);
+      await this.updateDownloadedChapters();
+    }
+  }
 
 }

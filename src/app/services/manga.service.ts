@@ -113,29 +113,34 @@ export class MangaService {
           if (urls.indexOf(url) === 1) console.log(`requested page 1 at ${new Date()} !`)
           await this.requestWeb(url, async (res) => {
             let page = urls.indexOf(url);
-            if (page === 1) console.log(`result of page 1 at ${new Date()}`)
             callbackProgress({
               action: 'request',
               chapter: chapter,
-              finish: true
+              finish: true,
+              page: page
             })
             await this.downloadService.downloadChapterPage(parsedTitle, `chapitre-${chapter.num}-${page+1}`, res, url, async (data) => {
               let index = urls.indexOf(url);
-              if (index === 1) console.log(`save of page 1 at ${new Date()}`)
               data.nbPage = index;
               chapter.pages[index] = data;
               callbackProgress({
                 action: 'download',
                 chapter: chapter,
-                finish: true
+                finish: true,
+                page: index
               })
               let all_dl = true
               for (let i = 0; i<chapter.pages.length; i++) {
                 if (chapter.pages[i] === undefined) all_dl = false
               }
               if (all_dl) {
-                console.log("tout dl -> on sauvegarde")
                 await this.storageService.appendChapterDownload(parsedTitle, chapter);
+                callbackProgress({
+                  action: 'end',
+                  chapter: chapter,
+                  finish: true,
+                  page: index
+                })
               }
             })
           }, (err) => {

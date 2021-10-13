@@ -10,29 +10,54 @@ import { DataObject, getRandomNotFoundMessage } from './../services/objects';
 })
 export class ChapterListComponent implements OnInit {
 
-  @Input() chapterList: DataObject[];
+  private _chapterList: DataObject[];
   @Input() manga: DataObject;
 
-  @Input() title: string = "Liste de Chapitres";
-  @Input() showDeleteOption: boolean = true;
-  @Input() showDownloadOption: boolean = true;
-  @Input() InWaiting: boolean = false;
-
-  private maxChapterPermitted: number = 10;
   private offset: number = 10;
+  private maxChapterPermitted: number = 0;
 
   private NotFoundMessage: DataObject = null;
 
   private checkedChapter: DataObject[] = [];
   private checkMode: boolean = false;
+
+  //options
+  @Input() title: string = "Liste de Chapitres";
+  @Input() modalOptionsToShow: string[] = ["read", "delete", "download"];
+  @Input() InWaiting: boolean = false;
+  @Input() showTitleIfNoChapter: boolean = true;
+  @Input() affichageChapter: string = "normal";
+  @Input() sortedBy: string = "nothing";
+
+  //Outputs
   @Output() checkModeChanged = new EventEmitter<DataObject>();
   @Output() updateCheckedChapterList = new EventEmitter<DataObject>();
 
   constructor() {
     this.NotFoundMessage = getRandomNotFoundMessage();
+    this.maxChapterPermitted = this.offset;
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
+
+  //Setter Getter
+  @Input() set chapterList(val: DataObject[]) {
+    if (this.sortedBy !== "nothing") {
+      val.sort((a, b) => {
+        if (a[this.sortedBy] > b[this.sortedBy]) {
+          return -1
+        } else if (a[this.sortedBy] < b[this.sortedBy]) {
+          return 1
+        }
+        return 0
+      })
+    }
+    this._chapterList = val;
+  }
+
+  get chapterList() {
+    return this._chapterList;
+  }
 
   //Basics Methods
   private chapterExist(index: number) {
