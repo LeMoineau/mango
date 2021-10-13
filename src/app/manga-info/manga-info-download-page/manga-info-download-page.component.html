@@ -12,7 +12,7 @@
       title="Chapitres disponibles"
       [chapterList]="manga.chapters.onlineChapters[selectedProxy]"
       [manga]="manga"
-      [modalOptionsToShow]="['read', 'download']"
+      [modalOptionsToShow]="['readOnline', 'download']"
       [InWaiting]="InWaiting()"
       (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'download-page'})"
       (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">

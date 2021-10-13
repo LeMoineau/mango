@@ -34,6 +34,8 @@ export class MangaReaderComponent implements OnInit {
     pages: []
   }
 
+  private online: boolean = false; // TODO: faire lecture online
+
   constructor(
     private modalController: ModalController,
     private downloadService: DownloadService
@@ -43,7 +45,6 @@ export class MangaReaderComponent implements OnInit {
 
   async ionViewDidEnter() {
     this.loadingConst.pageCharged = true;
-    console.log(this.chapter)
 
     await this.init();
   }

@@ -43,9 +43,10 @@ export class ChapterComponent implements OnInit {
   }
 
   //Specifics Methods
-  private readManga(chapter: DataObject) {
+  private readManga(chapter: DataObject, online: boolean = false) {
     this.modalService.openModal(MangaReaderComponent, {
-      chapter: chapter
+      chapter: chapter,
+      online: true
     }, (res) => {
 
     })
@@ -60,7 +61,7 @@ export class ChapterComponent implements OnInit {
   private async openActionSheet(chapter: DataObject) {
     let bankButtons = [
       {
-        text: "Lire le Chapitre",
+        text: "Lire le chapitre",
         role: "read",
         icon: "book",
         handler: () => {
@@ -68,7 +69,15 @@ export class ChapterComponent implements OnInit {
         }
       },
       {
-        text: "Télécharger le Chapitre",
+        text: "Lire le chapitre en ligne",
+        role: "readOnline",
+        icon: "book",
+        handler: () => {
+          this.readManga(chapter, true);
+        }
+      },
+      {
+        text: "Télécharger le chapitre",
         role: "download",
         icon: "download",
         handler: () => {
@@ -76,7 +85,7 @@ export class ChapterComponent implements OnInit {
         }
       },
       {
-        text: "Supprimer le Chapitre",
+        text: "Supprimer le chapitre",
         role: "delete",
         icon: "trash",
         handler: () => {

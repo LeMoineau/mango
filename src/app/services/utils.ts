@@ -73,3 +73,24 @@ export function getExtensionOfImageUrl(url: string) {
 export function getRandomNumber(max: number) {
   return Math.floor(Math.random() * max);
 }
+
+const undefinedValuesAdmisses = 2;
+export function removeUndefinedValues(arr: any[]) {
+  let res = [];
+  for (let a of arr) {
+    if (a !== undefined) {
+      if (isObject(a)) {
+        let undefinedCompteur = 0;
+        for (let key in a) {
+          if (a[key] === undefined) undefinedCompteur++;
+        }
+        if (undefinedCompteur < undefinedValuesAdmisses) {
+          res.push(a)
+        }
+      } else {
+        res.push(a)
+      }
+    }
+  }
+  return res;
+}

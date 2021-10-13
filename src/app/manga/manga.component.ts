@@ -35,7 +35,6 @@ export class MangaComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    console.log(this.manga)
     await this.updateTags();
   }
 

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from '@ionic/angular';
 
 import { DataObject } from './../services/objects';
-import { concatener } from './../services/utils';
+import { concatener, removeUndefinedValues } from './../services/utils';
 import { MangaService } from './../services/manga.service';
 import { SettingsService } from './../services/settings.service'
 
@@ -22,7 +22,6 @@ export class DownloadComponent extends LoadingModule implements OnInit {
     recentChapters: []
   }
 
-  private inSearching = false
   private searchingResult = [
 
   ]
@@ -50,46 +49,29 @@ export class DownloadComponent extends LoadingModule implements OnInit {
     return lowConnectionMode;
   }
 
-  getNewMangaChapters() {
-    this.mangaService.getNewMangaChapters(this.currentPageOnline, data => {
+  async getNewMangaChapters() {
+    await this.mangaService.getNewMangaChapters(this.currentPageOnline, data => {
+      for (let key in data) {
+        data[key] = removeUndefinedValues(data[key]);
+      }
+      console.log(data)
       this.mangaList = concatener(this.mangaList, data);
     }, (err) => {
-
+      console.log(err)
     })
     this.currentPageOnline += 1;
   }
 
-  async refreshMangaList(event) {
-    await this.getNewMangaChapters();
-    event.target.complete();
-  }
-
-  private isInSearching() {
-    return this.inSearching;
-  }
-
-  private setInSearching(val: boolean) {
-    this.inSearching = val;
-  }
-
   public addSearchingResult(result: DataObject) {
-    if (result.beginNewSearch) {
-      this.searchingResult = []
-      this.beginWaiting()
-      if (!this.isInSearching()) {
-        this.setInSearching(true)
-      }
-    } else {
-      if (result.data !== null && result.data.title.length > 0) {
-        delete result.data["chapters"]
-        result.data.infos["source"] = result.source
-        this.searchingResult.unshift(result);
-        console.log(this.searchingResult)
-      }
+    if (result.data !== null && result.data.title.length > 0) {
+      delete result.data["chapters"]
+      result.data.infos["source"] = result.source
+      this.searchingResult.unshift(result);
+      console.log(this.searchingResult)
+    }
 
-      if (result.lastResearch) {
-        this.endWaiting()
-      }
+    if (result.lastResearch) {
+      this.endWaiting()
     }
   }
 

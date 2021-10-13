@@ -17,13 +17,16 @@
     </ng-container>
   </ion-label>
 
-  <ion-icon
-    *ngIf="!isInCheckMode"
-    button
-    (click)="openActionSheet(chapter)"
-    slot="end"
-    name="ellipsis-vertical">
-  </ion-icon>
+  <ng-container
+      *ngIf="modalOptionsToShow.length > 0">
+    <ion-icon
+      *ngIf="!isInCheckMode"
+      button
+      (click)="openActionSheet(chapter)"
+      slot="end"
+      name="ellipsis-vertical">
+    </ion-icon>
+  </ng-container>
 
   <ion-checkbox
     *ngIf="isInCheckMode && isCheckable"

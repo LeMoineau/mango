@@ -1,5 +1,6 @@
 
-<ion-list>
+<ion-list
+  *ngIf="showTitleIfNoChapter || !noChapters()">
 
   <!-- Titre header -->
   <ion-item
@@ -23,21 +24,35 @@
   <!-- Chargement des Chapitres -->
   <ion-spinner *ngIf="InWaiting" name="circular"></ion-spinner>
 
-  <!-- Liste de chapitre -->
+  <!-- Liste de chapitres -->
   <ng-container
-      *ngFor="let tmp of [].constructor(maxChapterPermitted); let i = index">
-    <app-chapter
-      *ngIf="chapterExist(i)"
-      longTap
-      (longPress)="toggleCheckMode($event)"
-      [chapter]="chapterList[i]"
-      [mangaParent]="manga"
-      [modalOptionsToShow]="modalOptionsToShow"
-      [isInCheckMode]="isInCheckMode()"
-      [isChecked]="checkedChapter.includes(chapterList[i])"
-      [affichage]="affichageChapter"
-      (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])">
-    </app-chapter>
+      *ngIf="mangas === undefined">
+    <ng-container
+        *ngFor="let tmp of [].constructor(maxChapterPermitted); let i = index">
+      <app-chapter
+        *ngIf="chapterExist(i)"
+        longTap
+        (longPress)="toggleCheckMode($event)"
+        [chapter]="chapterList[i]"
+        [mangaParent]="manga"
+        [modalOptionsToShow]="modalOptionsToShow"
+        [isCheckable]="isCheckable"
+        [isInCheckMode]="isInCheckMode()"
+        [isChecked]="checkedChapter.includes(chapterList[i])"
+        [affichage]="affichageChapter"
+        (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])">
+      </app-chapter>
+    </ng-container>
+  </ng-container>
+
+  <!-- List de mangas -->
+  <ng-container *ngIf="mangas !== undefined">
+    <ion-list *ngFor="let manga of mangas">
+      <app-manga
+        [manga]="manga"
+        baseActiveSlide="2">
+      </app-manga>
+    </ion-list>
   </ng-container>
 
   <!-- Aucun Chapitres trouvés -->
