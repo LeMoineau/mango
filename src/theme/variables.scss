@@ -3,6 +3,12 @@
 
 /** Ionic CSS Variables **/
 :root {
+
+  /** Base Color for Super tabs 
+  --st-base-color-active: var(--ion-color-primary);
+  --st-base-color-inactive: var(--ion-color-sucess);
+  **/
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;

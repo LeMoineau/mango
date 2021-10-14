@@ -1,13 +1,17 @@
 
 import { Input, Output, EventEmitter } from '@angular/core';
+import { NavParams } from '@ionic/angular';
 
 import { LoadingModule } from './../modules/loading.module';
 
 import { DataObject } from './../services/objects';
 
+import { MangaInfoComponent } from './manga-info.component';
+
 export abstract class MangaInfoPage extends LoadingModule {
 
-  @Input() manga: DataObject;
+  protected manga: DataObject;
+  protected mangaInfo: MangaInfoComponent;
   @Output() dataToMangaInfo = new EventEmitter<DataObject>();
 
   protected pageInfos: DataObject = {
@@ -15,9 +19,11 @@ export abstract class MangaInfoPage extends LoadingModule {
     allChecked: false
   }
 
-  constructor() {
+  constructor(navParams: NavParams) {
     super();
     this.pageInfos.pageLoaded = true;
+    this.manga = navParams.get("manga");
+    this.mangaInfo = navParams.get("mangaInfo");
   }
 
   public abstract dismiss(): void;

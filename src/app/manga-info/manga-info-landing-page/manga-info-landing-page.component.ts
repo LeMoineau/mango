@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { NavParams } from '@ionic/angular';
 
 import { MangaInfoPage } from './../manga-info.page';
 
@@ -24,9 +25,14 @@ export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnIn
     private storageService: StorageService,
     private tagsService: TagsService,
     private modalService: ModalService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private navParams: NavParams
   ) {
-    super();
+    super(navParams);
+    this.mangaInfo.synchroniseTab({
+      keyName: "landingPage",
+      comp: this
+    })
   }
 
   async ngOnInit() {
@@ -35,18 +41,6 @@ export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnIn
   }
 
   //Basics Methods
-  private addInfos(key: string, value: any) {
-    if (value.length > 0) {
-      let index = this.manga.infos.iter.findIndex((infoKey) => {
-        return (infoKey.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(infoKey.toLowerCase()))
-      })
-      if (index === -1) {
-        this.manga.infos.iter.push(key);
-        this.manga.infos[key] = value;
-      }
-    }
-  }
-
   public updateInfos(manga: DataObject = null, waitOtherInfos: boolean = false) {
     if (manga !== null && manga.infos !== undefined) {
       if (manga.infos.iter === undefined) {
@@ -61,6 +55,18 @@ export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnIn
         this.storageService.updateMangaInfos(this.manga.parsedTitle, manga.infos)
       }
       this.endWaiting();
+    }
+  }
+
+  private addInfos(key: string, value: any) {
+    if (value.length > 0) {
+      let index = this.manga.infos.iter.findIndex((infoKey) => {
+        return (infoKey.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(infoKey.toLowerCase()))
+      })
+      if (index === -1) {
+        this.manga.infos.iter.push(key);
+        this.manga.infos[key] = value;
+      }
     }
   }
 

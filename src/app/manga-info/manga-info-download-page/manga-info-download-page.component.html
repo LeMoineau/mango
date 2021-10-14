@@ -1,33 +1,35 @@
 
-<ion-list class="chapter-local-items-container manga-info-items-container">
+<ion-content>
+  <ion-list class="chapter-local-items-container manga-info-items-container">
 
-  <!-- Proxy Selection Bar -->
-  <manga-info-proxy-selector-bar
-     (proxySelectedChange)="proxySelectedChange($event)">
-  </manga-info-proxy-selector-bar>
+    <!-- Proxy Selection Bar -->
+    <manga-info-proxy-selector-bar
+       (proxySelectedChange)="proxySelectedChange($event)">
+    </manga-info-proxy-selector-bar>
 
-  <!-- Liste des Chapitres trouvés  -->
-  <ng-container *ngIf="hasChapters()">
-    <app-chapter-list
-      title="Chapitres disponibles"
-      [chapterList]="manga.chapters.onlineChapters[selectedProxy]"
-      [manga]="manga"
-      [modalOptionsToShow]="['readOnline', 'download']"
-      [InWaiting]="InWaiting()"
-      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'download-page'})"
-      (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
-    </app-chapter-list>
-  </ng-container>
+    <!-- Liste des Chapitres trouvés  -->
+    <ng-container *ngIf="hasChapters()">
+      <app-chapter-list
+        title="Chapitres disponibles"
+        [chapterList]="manga.chapters.onlineChapters[selectedProxy]"
+        [manga]="manga"
+        [modalOptionsToShow]="['readOnline', 'download']"
+        [InWaiting]="InWaiting()"
+        (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'download-page'})"
+        (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
+      </app-chapter-list>
+    </ng-container>
 
-  <!-- Low connection Mode enabled -->
-  <section *ngIf="settingsService.getParameter('lowConnectionMode') && noChapters() && !InWaiting()"
-      id="low-connection-information">
-    <h2 id="low-connection-information-title"> Mode économie de connexion </h2>
-    <p>Nous chargerons du contenu depuis Internet que lorsque vous le voudrez !</p>
-    <p>Appuyer sur le bouton ci-dessus pour lancer la recherche</p>
-    <ion-button class="low-connection-button" expand="block" (click)="updateMangaInfos()">
-      Charger les chapitres
-    </ion-button>
-  </section>
+    <!-- Low connection Mode enabled -->
+    <section *ngIf="settingsService.getParameter('lowConnectionMode') && noChapters() && !InWaiting()"
+        id="low-connection-information">
+      <h2 id="low-connection-information-title"> Mode économie de connexion </h2>
+      <p>Nous chargerons du contenu depuis Internet que lorsque vous le voudrez !</p>
+      <p>Appuyer sur le bouton ci-dessus pour lancer la recherche</p>
+      <ion-button class="low-connection-button" expand="block" (click)="updateMangaInfos()">
+        Charger les chapitres
+      </ion-button>
+    </section>
 
-</ion-list>
+  </ion-list>
+</ion-content>

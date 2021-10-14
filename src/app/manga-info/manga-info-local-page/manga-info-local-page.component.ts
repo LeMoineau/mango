@@ -1,5 +1,6 @@
 
 import { Component, OnInit, Input } from '@angular/core';
+import { NavParams } from '@ionic/angular';
 
 import { MangaInfoChapterPage } from './../manga-info.chapter-page';
 import { MangaReaderComponent } from './../../manga-reader/manga-reader.component';
@@ -24,9 +25,14 @@ export class MangaInfoLocalPageComponent extends MangaInfoChapterPage implements
   constructor(
     private storageService: StorageService,
     private modalService: ModalService,
-    private mangaService: MangaService
+    private mangaService: MangaService,
+    private navParams: NavParams
   ) {
-    super();
+    super(navParams);
+    this.mangaInfo.synchroniseTab({
+      keyName: "localPage",
+      comp: this
+    })
   }
 
   async ngOnInit() {

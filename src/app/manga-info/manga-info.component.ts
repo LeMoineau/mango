@@ -1,6 +1,8 @@
 
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ModalController, IonSlides } from '@ionic/angular';
+import { Component, Input, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+
+import { SynchroniserSuperTabs } from './../modules/synchroniser-super-tabs.module';
 
 import { MangaInfoMenuComponent } from './manga-info-menu/manga-info-menu.component';
 import { MangaInfoLandingPageComponent } from './manga-info-landing-page/manga-info-landing-page.component';
@@ -21,12 +23,16 @@ import { FabButtonService } from './../services/fab-button.service';
   templateUrl: './manga-info.component.html',
   styleUrls: ['./manga-info.component.scss'],
 })
-export class MangaInfoComponent implements OnInit {
+export class MangaInfoComponent extends SynchroniserSuperTabs {
 
-  @ViewChild('slides') slides: IonSlides;
-  @ViewChild(MangaInfoLandingPageComponent) landingPage: MangaInfoLandingPageComponent;
-  @ViewChild(MangaInfoLocalPageComponent) localPage: MangaInfoLocalPageComponent;
-  @ViewChild(MangaInfoDownloadPageComponent) downloadPage: MangaInfoDownloadPageComponent;
+  private landingPage: MangaInfoLandingPageComponent = null;
+  private localPage: MangaInfoLocalPageComponent = null;
+  private downloadPage: MangaInfoDownloadPageComponent = null;
+
+  private landing = MangaInfoLandingPageComponent;
+  private local = MangaInfoLocalPageComponent;
+  private download = MangaInfoDownloadPageComponent;
+  private thisInstance = this;
 
   private baseActiveSlide: number = 0;
   private slidesManager: DataObject = {
@@ -37,7 +43,7 @@ export class MangaInfoComponent implements OnInit {
 
   private showDeleteMangaOption: boolean = false;
 
-  public manga: DataObject = {}
+  @Input() manga: DataObject = {}
 
   constructor(
     private modalController: ModalController,
@@ -46,35 +52,16 @@ export class MangaInfoComponent implements OnInit {
     private storageService: StorageService,
     private modalService: ModalService,
     private fabButtonService: FabButtonService
-  ) { }
-
-  ngOnInit() { }
-
-  ngAfterViewInit() {
-    this.init();
+  ) {
+    super();
   }
 
-  private waitViewChildInit(viewChild: string) {
-    return new Promise((resolve) => {
-      if (this[viewChild] !== undefined) {
-        resolve(viewChild);
-      } else {
-        let interval = setInterval(() => {
-          if (this[viewChild] !== undefined) {
-            clearInterval(interval);
-            resolve(viewChild);
-          }
-        }, 500)
-      }
-    })
+  public afterAllTabCharged() {
+    this.init();
   }
 
   private async init() {
     this.manga = concatener(this.manga, {...MangaStructure});
-
-    //Wait pages loading
-    await this.waitViewChildInit("downloadPage");
-    await this.waitViewChildInit("landingPage");
 
     //Check known mangas in allMangas storage
     const knowMangaInformation = await this.storageService.getMangaInfos(this.manga.parsedTitle);
@@ -96,27 +83,6 @@ export class MangaInfoComponent implements OnInit {
       this.downloadPage.addOnlineChapters(proxy, []);
       this.landingPage.updateInfos();
     }
-  }
-
-  async ionViewDidEnter() {
-    this.slidesManager.pageCharged = true;
-
-    //set fab-button click methods
-    this.fabButtonService.setFabParameterByParameter("forPage", 0, "onClick", () => {
-      this.editInfos()
-    })
-    this.fabButtonService.setFabParameterByParameter("forPage", 1, "onClick", () => {
-      this.deleteSelectedChapters()
-    })
-    this.fabButtonService.setFabParameterByParameter("forPage", 2, "onClick", () => {
-      this.downloadSelectedChapters()
-    })
-
-    //Wait ion-slides loading
-    this.waitViewChildInit("slides").then(async (slides) => {
-      if (this.baseActiveSlide !== 0) await this.slideTo(this.baseActiveSlide);
-      this.fabButtonService.updateCurrentPage(this.baseActiveSlide);
-    })
   }
 
   private newMangaInfoLoaded(event) {
@@ -193,16 +159,15 @@ export class MangaInfoComponent implements OnInit {
 
   //Slide Managing Method
   private async getActiveSlideIndex() {
-    await this.waitViewChildInit("slides");
-    return await this.slides.getActiveIndex();
+    //return await this.slides.getActiveIndex();
   }
 
   private async slideTo(index: number) {
-    await this.slides.slideTo(index);
+    //await this.slides.slideTo(index);
   }
 
   private async slideChange() {
-    this.fabButtonService.updateCurrentPage(await this.getActiveSlideIndex());
+    //this.fabButtonService.updateCurrentPage(await this.getActiveSlideIndex());
   }
 
   //Modal & Popover Method

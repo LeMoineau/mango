@@ -27,11 +27,13 @@
   <!-- Chargement des Chapitres -->
   <ion-spinner *ngIf="InWaiting" name="circular"></ion-spinner>
 
-  <!-- Liste de chapitres -->
+  <!-- Liste des components -->
   <ng-container
-      *ngIf="mangas === undefined">
+      *ngFor="let tmp of [].constructor(maxChapterPermitted); let i = index">
+
+    <!-- Liste de chapitres -->
     <ng-container
-        *ngFor="let tmp of [].constructor(maxChapterPermitted); let i = index">
+        *ngIf="!isMangaList">
       <app-chapter
         *ngIf="chapterExist(i)"
         longTap
@@ -46,17 +48,17 @@
         (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])">
       </app-chapter>
     </ng-container>
-  </ng-container>
 
-  <!-- List de mangas -->
-  <ng-container *ngIf="mangas !== undefined">
-    <ion-list *ngFor="let manga of mangas">
+    <!-- Liste de mangas -->
+    <ng-container
+        *ngIf="isMangaList">
       <app-manga
-        [manga]="manga"
+        *ngIf="chapterExist(i)"
+        [manga]="chapterList[i]"
         [affichage]="affichage"
         baseActiveSlide="2">
       </app-manga>
-    </ion-list>
+    </ng-container>
   </ng-container>
 
   <!-- Aucun Chapitres trouvés -->

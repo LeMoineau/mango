@@ -12,7 +12,6 @@ export class ChapterListComponent implements OnInit {
 
   private _chapterList: DataObject[];
   @Input() manga: DataObject;
-  @Input() mangas: DataObject[] = undefined;
 
   private offset: number = 10;
   private maxChapterPermitted: number = 0;
@@ -29,12 +28,13 @@ export class ChapterListComponent implements OnInit {
   @Input() showTitleIfNoChapter: boolean = true;
   @Input() affichage: string = "normal";
   @Input() sortedBy: string = "nothing";
-  @Input() callbackRefresh: any = undefined;
   @Input() isCheckable: boolean = true;
+  @Input() isMangaList: boolean = false;
 
   //Outputs
   @Output() checkModeChanged = new EventEmitter<DataObject>();
   @Output() updateCheckedChapterList = new EventEmitter<DataObject>();
+  @Output() showMoreChapter = new EventEmitter<DataObject>();
 
   constructor() {
     this.NotFoundMessage = getRandomNotFoundMessage();
@@ -68,7 +68,7 @@ export class ChapterListComponent implements OnInit {
   }
 
   private noChapters() {
-    return !((this.chapterList !== undefined && this.chapterList.length > 0) || (this.mangas !== undefined && this.mangas.length > 0))
+    return !(this.chapterList !== undefined && this.chapterList.length > 0)
   }
 
   private nbChapters() {
@@ -94,8 +94,14 @@ export class ChapterListComponent implements OnInit {
     if (this.chapterList.length >= this.maxChapterPermitted) {
       this.maxChapterPermitted += this.offset;
     }
-    if (this.callbackRefresh !== undefined && this.maxChapterPermitted >= this.chapterList.length) {
-      this.callbackRefresh();
+    console.log(this.maxChapterPermitted + "-" + this.chapterList.length)
+    if (this.maxChapterPermitted >= this.chapterList.length) {
+      console.log("coucou")
+      this.showMoreChapter.emit({
+        eventName: "showMoreChapter",
+        maxChapterPermitted: this.maxChapterPermitted,
+        currentChapterListLength: this.chapterList.length
+      })
     }
     event.target.complete();
   }

@@ -1,5 +1,6 @@
 
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 import { MangaInfoComponent } from './../manga-info/manga-info.component';
 
@@ -28,11 +29,13 @@ export class MangaComponent implements OnInit {
     private mangaService: MangaService,
     private settingsService: SettingsService,
     private modalService: ModalService,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    private navController: NavController
   ) { }
 
   async ngOnInit() {
     await this.updateTags();
+    //console.log(this.manga)
   }
 
   private getSubinfoString() {
@@ -44,19 +47,19 @@ export class MangaComponent implements OnInit {
     } else if (this.affichage === "sourced-manga") {
       return ` ― ${this.manga.infos.source || "aucune source"} `
     } else {
-      return "Aucune information supplémentaire";
+      return "";
     }
   }
 
   private getSubsubInfoString() {
-    if (this.affichage === "new-chapter") {
-      return `${this.manga.chapter.date}`
+    if (this.affichage === "normal") {
+      return `${this.manga.chapter.date}`; // ― ${ this.manga.chapter.source }
     } else if (this.affichage === "mangatheque") {
       return ""
     } else if (this.affichage === "sourced-manga") {
       return ""
     } else {
-      return "Aucune information supplémentaire";
+      return "";
     }
   }
 

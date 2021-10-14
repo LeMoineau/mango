@@ -1,5 +1,6 @@
 
 import { Input } from '@angular/core';
+import { NavParams } from '@ionic/angular';
 
 import { MangaInfoPage } from './manga-info.page';
 
@@ -9,8 +10,8 @@ export abstract class MangaInfoChapterPage extends MangaInfoPage {
 
   protected checkedChapter: DataObject[] = [];
 
-  constructor() {
-    super();
+  constructor(navParams: NavParams) {
+    super(navParams);
   }
 
   protected abstract getChapters(): DataObject[];

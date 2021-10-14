@@ -17,7 +17,8 @@
   <!-- Resultats de recherche -->
   <app-chapter-list
     title="Recherche"
-    [mangas]="searchingResult"
+    [chapterList]="searchingResult"
+    [isMangaList]="true"
     affichage="sourced-manga"
     [showTitleIfNoChapter]="false">
       <ion-icon button name="close" (click)="resetSearchingResult()"></ion-icon>
@@ -26,22 +27,21 @@
   <!-- Nouveaux Chapitres -->
   <app-chapter-list
     title="Nouveaux Chapitres"
-    [mangas]="mangaList.newestChapters"
-    [showTitleIfNoChapter]="false">
+    [chapterList]="mangaList.newestChapters"
+    [isMangaList]="true"
+    [showTitleIfNoChapter]="!getLowConnectionMode()">
   </app-chapter-list>
 
   <!-- Chapitres récents -->
   <app-chapter-list
     title="Chapitres récents"
-    [mangas]="mangaList.recentChapters"
-    [showTitleIfNoChapter]="false"
-    [callbackRefresh]="getNewMangaChapters">
+    [chapterList]="mangaList.recentChapters"
+    [isMangaList]="true"
+    [showTitleIfNoChapter]="!getLowConnectionMode()"
+    (showMoreChapter)="!getLowConnectionMode() ? getNewMangaChapters() : undefined">
   </app-chapter-list>
 
   <!-- Scroll infini -->
-  <ion-infinite-scroll *ngIf="!getLowConnectionMode()" threshold="100px" (ionInfinite)="refreshMangaList($event)">
-    <ion-infinite-scroll-content loadingSpinner="circular"> </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
   <section>
     <ion-button *ngIf="getLowConnectionMode()" class="low-connection-button" expand="block" (click)="getNewMangaChapters(undefined)">
       Charger les chapitres

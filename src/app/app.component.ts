@@ -1,5 +1,6 @@
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { IonNav } from '@ionic/angular';
 
 import { MangaInfoComponent } from './manga-info/manga-info.component';
 import { MangathequeComponent } from './mangatheque/mangatheque.component';
@@ -14,7 +15,7 @@ import { DataObject } from './services/objects';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
 
   private thisInstance;
   private mangatheque = MangathequeComponent;
@@ -22,6 +23,7 @@ export class AppComponent {
   private settings = SettingsComponent;
 
   @ViewChild('header') globalHeader: GlobalHeaderComponent;
+  @ViewChild('test') test: IonNav;
 
   private pages: DataObject = {
 
@@ -29,6 +31,17 @@ export class AppComponent {
 
   constructor() {
     this.thisInstance = this;
+  }
+
+  ngAfterViewInit() {
+
+  }
+
+  tester() {
+    console.log("coucou")
+    this.test.push(MangaInfoComponent, {manga: {
+      title: "test"
+    }})
   }
 
   //Specifics Methods

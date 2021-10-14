@@ -4,7 +4,7 @@
     <ion-buttons slot="start">
       <ion-back-button (click)="close()" defaultHref="mangatheque">back</ion-back-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title (click)="test()">
       {{ manga.title }}
     </ion-title>
     <ion-buttons slot="end">
@@ -15,6 +15,26 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <super-tabs
+    [activeTabIndex]="baseActiveSlide"
+    (tabChange)="undefined">
+
+    <!-- Super Tabs -->
+    <super-tabs-container>
+      <super-tab>
+        <ion-nav [root]="landing" [rootParams]="{ manga: manga, mangaInfo: thisInstance }"></ion-nav>
+      </super-tab>
+      <super-tab>
+        <ion-nav [root]="local" [rootParams]="{ manga: manga, mangaInfo: thisInstance }"></ion-nav>
+      </super-tab>
+      <super-tab>
+        <ion-nav [root]="download" [rootParams]="{ manga: manga, mangaInfo: thisInstance }"></ion-nav>
+      </super-tab>
+    </super-tabs-container>
+  </super-tabs>
+</ion-content>
+<!--
 <ion-content id="global-container">
   <ion-slides
     *ngIf="slidesManager.pageCharged"
@@ -22,7 +42,7 @@
     id="global-slides-container"
     #slides>
 
-    <!-- Information sur le manga -->
+
     <ion-slide class="manga-info-slide">
       <manga-info-landing-page
         [manga]="manga"
@@ -66,3 +86,4 @@
     </ion-fab>
   </div>
 </ion-content>
+-->

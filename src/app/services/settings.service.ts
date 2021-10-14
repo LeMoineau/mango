@@ -25,6 +25,7 @@ export class SettingsService {
         this.setParameter(field, storageSettings[field]);
       }
     }
+    this._settingsReady = true;
   }
 
   getSettings() {

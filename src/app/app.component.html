@@ -7,7 +7,7 @@
     #header>
   </app-global-header>
 
-  <!-- Page Content -->
+  <!--- Page Content -->
   <ion-content>
     <super-tabs
       [activeTabIndex]="1"
@@ -22,7 +22,7 @@
         </super-tab>
         <super-tab>
           <ion-content>
-            <ion-nav [root]="mangatheque" [rootParams]="thisInstance"></ion-nav>
+            <ion-nav [root]="mangatheque" [rootParams]="thisInstance" #test></ion-nav>
           </ion-content>
         </super-tab>
         <super-tab>

@@ -1,5 +1,6 @@
 
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { NavParams } from '@ionic/angular';
 
 import { MangaInfoChapterPage } from './../manga-info.chapter-page';
 
@@ -22,9 +23,14 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
 
   constructor(
     private settingsService: SettingsService,
-    private mangaService: MangaService
+    private mangaService: MangaService,
+    private navParams: NavParams
   ) {
-    super();
+    super(navParams);
+    this.mangaInfo.synchroniseTab({
+      keyName: "downloadPage",
+      comp: this
+    })
   }
 
   ngOnInit() {

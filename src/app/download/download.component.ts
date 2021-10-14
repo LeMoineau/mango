@@ -36,16 +36,16 @@ export class DownloadComponent extends LoadingModule implements OnInit {
     navParams.data.synchronisePage("downloadPage", this);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.settingsService.ready();
     if (!this.getLowConnectionMode()) {
-      this.getNewMangaChapters();
+      await this.getNewMangaChapters();
     }
   }
 
   //Basics Methods
   getLowConnectionMode() {
     let lowConnectionMode = this.settingsService.getParameter("lowConnectionMode");
-    if (!lowConnectionMode && this.currentPageOnline === 1) this.getNewMangaChapters();
     return lowConnectionMode;
   }
 

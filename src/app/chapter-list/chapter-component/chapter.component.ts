@@ -94,6 +94,16 @@ export class ChapterComponent implements OnInit {
       }
     ]
     let buttons = []
+    if (this.isCheckable) {
+      buttons.push({
+        text: "Selectionner",
+        role: "select",
+        icon: "checkbox-outline",
+        handler: () => {
+          this.toggleChecked();
+        }
+      })
+    }
     for (let role of this.modalOptionsToShow) {
       let b = bankButtons.find(b => b.role === role);
       if (b !== undefined) {

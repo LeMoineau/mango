@@ -1,28 +1,30 @@
 
-<ion-list class="chapter-local-items-container manga-info-items-container">
+<ion-content>
+  <ion-list class="chapter-local-items-container manga-info-items-container">
 
-  <!-- List des Chapitres en cours de dl -->
-  <app-chapter-list
-    title="En cours de téléchargement"
-    [chapterList]="inDownloadingChapters"
-    [manga]="manga"
-    [modalOptionsToShow]="['read', 'delete']"
-    sortedBy="num"
-    affichage="downloading"
-    [showTitleIfNoChapter]="false"
-    (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
-    (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
-  </app-chapter-list>
+    <!-- List des Chapitres en cours de dl -->
+    <app-chapter-list
+      title="En cours de téléchargement"
+      [chapterList]="inDownloadingChapters"
+      [manga]="manga"
+      [modalOptionsToShow]="['read', 'delete']"
+      sortedBy="num"
+      affichage="downloading"
+      [showTitleIfNoChapter]="false"
+      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
+      (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
+    </app-chapter-list>
 
-  <!-- List des Chapitres dl -->
-  <app-chapter-list
-    title="Chapitres téléchargés"
-    [chapterList]="manga.chapters.downloadedChapters"
-    [manga]="manga"
-    [modalOptionsToShow]="['read', 'delete']"
-    sortedBy="num"
-    (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
-    (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
-  </app-chapter-list>
+    <!-- List des Chapitres dl -->
+    <app-chapter-list
+      title="Chapitres téléchargés"
+      [chapterList]="manga.chapters.downloadedChapters"
+      [manga]="manga"
+      [modalOptionsToShow]="['read', 'delete']"
+      sortedBy="num"
+      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
+      (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
+    </app-chapter-list>
 
-</ion-list>
+  </ion-list>
+</ion-content>
