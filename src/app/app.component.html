@@ -17,17 +17,17 @@
       <super-tabs-container>
         <super-tab>
           <ion-content>
-            <ion-nav [root]="download" [rootParams]="thisInstance"></ion-nav>
+            <ion-nav [root]="download" [rootParams]="{appContainer: thisInstance}"></ion-nav>
           </ion-content>
         </super-tab>
         <super-tab>
           <ion-content>
-            <ion-nav [root]="mangatheque" [rootParams]="thisInstance" #test></ion-nav>
+            <ion-nav [root]="mangatheque" [rootParams]="{appContainer: thisInstance}" #test></ion-nav>
           </ion-content>
         </super-tab>
         <super-tab>
           <ion-content>
-            <ion-nav [root]="settings" [rootParams]="thisInstance"></ion-nav>
+            <ion-nav [root]="settings" [rootParams]="{appContainer: thisInstance}"></ion-nav>
           </ion-content>
         </super-tab>
       </super-tabs-container>

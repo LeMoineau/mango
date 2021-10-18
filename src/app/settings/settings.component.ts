@@ -9,12 +9,16 @@ import { ProxyService } from './../services/proxy.service';
 import { ModalService } from './../services/modal.service';
 import { InitialSettings } from './../services/objects';
 
+import { MangaInfoComponent } from './../manga-info/manga-info.component';
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
+
+  private appContainer: MangaInfoComponent;
 
   constructor(
     private settingsService: SettingsService,
@@ -26,7 +30,11 @@ export class SettingsComponent implements OnInit {
     private navParams: NavParams,
     private proxyService: ProxyService
   ) {
-    navParams.data.synchronisePage("settingsPage", this)
+    this.appContainer = navParams.get("appContainer");
+    this.appContainer.synchroniseTab({
+      keyName: "settingsPage",
+      comp: this
+    })
   }
 
   ngOnInit() {}

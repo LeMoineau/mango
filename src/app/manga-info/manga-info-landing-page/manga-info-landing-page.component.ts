@@ -70,10 +70,6 @@ export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnIn
     }
   }
 
-  public dismiss(): void {
-    this.editionEnd(false);
-  }
-
   //More specifics Methods
   public editionStart() {
     this.inEdition = true;

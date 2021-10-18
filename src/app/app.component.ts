@@ -8,6 +8,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { DownloadComponent } from './download/download.component';
 import { GlobalHeaderComponent } from './global/global-header/global-header.component';
 
+import { SynchroniserSuperTabs } from './modules/synchroniser-super-tabs.module';
+
 import { DataObject } from './services/objects';
 
 @Component({
@@ -15,7 +17,7 @@ import { DataObject } from './services/objects';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent extends SynchroniserSuperTabs implements AfterViewInit {
 
   private thisInstance;
   private mangatheque = MangathequeComponent;
@@ -23,25 +25,14 @@ export class AppComponent implements AfterViewInit {
   private settings = SettingsComponent;
 
   @ViewChild('header') globalHeader: GlobalHeaderComponent;
-  @ViewChild('test') test: IonNav;
-
-  private pages: DataObject = {
-
-  }
 
   constructor() {
+    super();
     this.thisInstance = this;
   }
 
   ngAfterViewInit() {
 
-  }
-
-  tester() {
-    console.log("coucou")
-    this.test.push(MangaInfoComponent, {manga: {
-      title: "test"
-    }})
   }
 
   //Specifics Methods
@@ -53,18 +44,14 @@ export class AppComponent implements AfterViewInit {
 
   private searchingReturn(result) {
     if (result.tabIndex === 0) {
-      if (this.pages["downloadPage"] !== undefined) {
-        this.pages["downloadPage"].addSearchingResult(result)
+      if (this.getTab("downloadPage") !== undefined) {
+        this.getTab("downloadPage").addSearchingResult(result)
       }
     } else if (result.tabIndex === 1) {
 
     } else if (result.tabIndex === 2) {
 
     }
-  }
-
-  public synchronisePage(pageName: string, component: any) {
-    this.pages[pageName] = component
   }
 
 }

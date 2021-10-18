@@ -12,7 +12,8 @@ export abstract class MangaInfoPage extends LoadingModule {
 
   protected manga: DataObject;
   protected mangaInfo: MangaInfoComponent;
-  @Output() dataToMangaInfo = new EventEmitter<DataObject>();
+
+  public globalCheckMode: boolean = false;
 
   protected pageInfos: DataObject = {
     pageLoaded: false,
@@ -26,10 +27,13 @@ export abstract class MangaInfoPage extends LoadingModule {
     this.mangaInfo = navParams.get("mangaInfo");
   }
 
-  public abstract dismiss(): void;
-
   protected passInformationToMangaInfo(infos: DataObject) {
-    this.dataToMangaInfo.emit(infos)
+    this.mangaInfo.dataToMangaInfo(infos)
+  }
+
+  public setGlobalCheckMode(val: boolean) {
+    this.globalCheckMode = val;
+    console.log("coucou")
   }
 
 }

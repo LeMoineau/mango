@@ -39,7 +39,10 @@ export class MangathequeComponent implements OnInit {
     public navCtrl: NavController,
     private navParams: NavParams
   ) {
-    navParams.data.synchronisePage("mangatheque", this)
+    navParams.get("appContainer").synchroniseTab({
+      keyName: "mangathequePage",
+      comp: this
+    })
   }
 
   async ngOnInit() {

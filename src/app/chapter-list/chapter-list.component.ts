@@ -19,7 +19,7 @@ export class ChapterListComponent implements OnInit {
   private NotFoundMessage: DataObject = null;
 
   private checkedChapter: DataObject[] = [];
-  private checkMode: boolean = false;
+  private _checkMode: boolean = false;
 
   //options
   @Input() title: string = "Liste de Chapitres";
@@ -62,6 +62,15 @@ export class ChapterListComponent implements OnInit {
     return this._chapterList;
   }
 
+  @Input() set checkMode(val: boolean) {
+    this._checkMode = val;
+    console.log("slaut")
+  }
+
+  get checkMode() {
+    return this._checkMode;
+  }
+
   //Basics Methods
   private chapterExist(index: number) {
     return (this.chapterList !== undefined && this.chapterList.length > index);
@@ -75,12 +84,13 @@ export class ChapterListComponent implements OnInit {
     return this.chapterList === undefined ? 0 : this.chapterList.length;
   }
 
-  private toggleCheckMode() {
+  private toggleCheckMode(val: boolean = undefined) {
     if (this.isCheckable) {
-      this.checkMode = !this.checkMode;
+      this.checkMode = val === undefined ? !this.checkMode : val;
       this.checkModeChanged.emit({
         eventName: "checkModeChanged",
-        checkMode: this.checkMode
+        checkMode: this.checkMode,
+        value: this.checkMode
       })
     }
   }
@@ -117,7 +127,8 @@ export class ChapterListComponent implements OnInit {
     }
     this.updateCheckedChapterList.emit({
       eventName: "updateCheckedChapterList",
-      checkedChapter: this.checkedChapter
+      checkedChapter: this.checkedChapter,
+      value: this.checkedChapter
     })
   }
 

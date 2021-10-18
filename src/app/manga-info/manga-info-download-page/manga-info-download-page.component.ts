@@ -45,9 +45,7 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
 
   private updateMangaInfos(proxy: string = this.selectedProxy) {
     this.beginWaiting();
-    console.log("coucou")
     if (this.manga.chapters.onlineChapters[proxy] === undefined || this.settingsService.getParameter("lowConnectionMode")) {
-      console.log("cocou2")
       this.addOnlineChapters(proxy, [], false)
       this.mangaService.getMangaInfos(proxy, this.manga.parsedTitle, (data) => {
         console.log(data)
@@ -65,10 +63,6 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
     this.selectedProxy = proxy;
     this.setChapters(onlineChapters)
     if (endWaiting) this.endWaiting();
-  }
-
-  public dismiss(): void {
-    this.manga.chapters.onlineChapters = {};
   }
 
   //Inherit Methods

@@ -4,10 +4,12 @@
     <ion-buttons slot="start">
       <ion-back-button (click)="close()" defaultHref="mangatheque">back</ion-back-button>
     </ion-buttons>
-    <ion-title (click)="test()">
-      {{ manga.title }}
+    <ion-title>
+      {{ !isInCheckMode ? manga.title : "Selection de chapitres" }}
     </ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons
+        *ngIf="!isInCheckMode"
+        slot="end">
       <ion-button (click)="openMangaInfoMenu($event)">
         <ion-icon slot="icon-only" name="ellipsis-vertical" size="large"></ion-icon>
       </ion-button>
@@ -18,10 +20,12 @@
 <ion-content>
   <super-tabs
     [activeTabIndex]="baseActiveSlide"
-    (tabChange)="undefined">
+    (tabChange)="undefined"
+    #supertabs>
 
     <!-- Super Tabs -->
-    <super-tabs-container>
+    <super-tabs-container
+        [swipeEnabled]="!isInCheckMode">
       <super-tab>
         <ion-nav [root]="landing" [rootParams]="{ manga: manga, mangaInfo: thisInstance }"></ion-nav>
       </super-tab>
@@ -32,58 +36,14 @@
         <ion-nav [root]="download" [rootParams]="{ manga: manga, mangaInfo: thisInstance }"></ion-nav>
       </super-tab>
     </super-tabs-container>
+
+    <!-- footer -->
+    <manga-info-footer
+      *ngIf="isInCheckMode"
+      [fromPage]="pageCheckedName"
+      (cancelFunction)="closeFooter($event)"
+      (deleteFunction)="deleteSelectedChapters($event)"
+      (downloadFunction)="downloadSelectedChapters($event)">
+    </manga-info-footer>
   </super-tabs>
 </ion-content>
-<!--
-<ion-content id="global-container">
-  <ion-slides
-    *ngIf="slidesManager.pageCharged"
-    (ionSlideWillChange)="slideChange()"
-    id="global-slides-container"
-    #slides>
-
-
-    <ion-slide class="manga-info-slide">
-      <manga-info-landing-page
-        [manga]="manga"
-        (dataToMangaInfo)="dataToMangaInfo($event)">
-      </manga-info-landing-page>
-    </ion-slide>
-
-    <ion-slide class="manga-info-slide">
-      <manga-info-local-page
-        [manga]="manga"
-        (dataToMangaInfo)="dataToMangaInfo($event)">
-      </manga-info-local-page>
-    </ion-slide>
-
-    <ion-slide class="manga-info-slide">
-      <manga-info-download-page
-        [manga]="manga"
-        (newMangaInfoLoaded)="newMangaInfoLoaded($event)"
-        (dataToMangaInfo)="dataToMangaInfo($event)">
-      </manga-info-download-page>
-    </ion-slide>
-  </ion-slides>
-
-  <div id="fab-button-container">
-    <ion-fab
-        *ngFor="let fab of fabButtonService.fabs()"
-        [id]="fab.fabName"
-        class="fab-button"
-        vertical="bottom"
-        horizontal="end"
-        slot="fixed"
-        [ngStyle]="{'display': fab.visible && fab.forPage === fabButtonService.getCurrentPage() ? 'block' : 'none'}">
-      <ion-fab-button
-          (click)="fab.onClick()"
-          [color]="fab.color">
-        <ion-icon
-          [name]="fab.iconName"
-          style="color: white">
-        </ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </div>
-</ion-content>
--->

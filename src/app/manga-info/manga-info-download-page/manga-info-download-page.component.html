@@ -15,6 +15,7 @@
         [manga]="manga"
         [modalOptionsToShow]="['readOnline', 'download']"
         [InWaiting]="InWaiting()"
+        [checkMode]="globalCheckMode"
         (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'download-page'})"
         (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
       </app-chapter-list>

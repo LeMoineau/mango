@@ -17,6 +17,7 @@ import { MangaInfoProxySelectorBarComponent }
 import { MangaInfoLocalPageComponent } from './../manga-info/manga-info-local-page/manga-info-local-page.component';
 import { ChapterListComponent } from './../chapter-list/chapter-list.component';
 import { ChapterComponent } from './../chapter-list/chapter-component/chapter.component';
+import { MangaInfoFooterComponent } from './../manga-info/manga-info-footer/manga-info-footer.component';
 
 import { LongTapDirective } from './../directives/long-tap/long-tap.directive'
 
@@ -47,7 +48,8 @@ export const DeclaredComponents = [
   MangaInfoLocalPageComponent,
   LongTapDirective,
   ChapterListComponent,
-  ChapterComponent
+  ChapterComponent,
+  MangaInfoFooterComponent
 ]
 
 export const ProvidedServices = [

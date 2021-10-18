@@ -25,23 +25,17 @@ import { FabButtonService } from './../services/fab-button.service';
 })
 export class MangaInfoComponent extends SynchroniserSuperTabs {
 
-  private landingPage: MangaInfoLandingPageComponent = null;
-  private localPage: MangaInfoLocalPageComponent = null;
-  private downloadPage: MangaInfoDownloadPageComponent = null;
-
   private landing = MangaInfoLandingPageComponent;
   private local = MangaInfoLocalPageComponent;
   private download = MangaInfoDownloadPageComponent;
   private thisInstance = this;
 
-  private baseActiveSlide: number = 0;
-  private slidesManager: DataObject = {
-    screenSize: "100vh",
-    slidesIds: ["information-slide", "localSection-slide", "onlineSection-slide"],
-    pageCharged: false
-  }
+  @ViewChild('supertabs', {static: false}) superTabsComp;
 
+  private baseActiveSlide: number = 0;
   private showDeleteMangaOption: boolean = false;
+  private isInCheckMode: boolean = false;
+  private pageCheckedName: string;
 
   @Input() manga: DataObject = {}
 
@@ -66,27 +60,27 @@ export class MangaInfoComponent extends SynchroniserSuperTabs {
     //Check known mangas in allMangas storage
     const knowMangaInformation = await this.storageService.getMangaInfos(this.manga.parsedTitle);
     if (knowMangaInformation !== undefined) {
-      this.landingPage.updateInfos(knowMangaInformation, !this.settingsService.getParameter("lowConnectionMode"));
+      this.getTab("landingPage").updateInfos(knowMangaInformation, !this.settingsService.getParameter("lowConnectionMode"));
     }
 
     //Check online manga informations for the proxy 'proxyDownloadChapter'
     let proxy = this.settingsService.getParameter('proxyDownloadChapter');
     if (!this.settingsService.getParameter("lowConnectionMode")) {
       this.mangaService.getMangaInfos(proxy, this.manga.parsedTitle, (data) => {
-        this.downloadPage.addOnlineChapters(proxy, data.chapters);
-        this.landingPage.updateInfos(data);
+        this.getTab("downloadPage").addOnlineChapters(proxy, data.chapters);
+        this.getTab("landingPage").updateInfos(data);
       }, (err) => {
-        this.downloadPage.addOnlineChapters(proxy, []);
-        this.landingPage.updateInfos();
+        this.getTab("downloadPage").addOnlineChapters(proxy, []);
+        this.getTab("landingPage").updateInfos();
       })
     } else {
-      this.downloadPage.addOnlineChapters(proxy, []);
-      this.landingPage.updateInfos();
+      this.getTab("downloadPage").addOnlineChapters(proxy, []);
+      this.getTab("landingPage").updateInfos();
     }
   }
 
   private newMangaInfoLoaded(event) {
-    this.landingPage.updateInfos(event.mangaLoaded);
+    this.getTab("landingPage").updateInfos(event.mangaLoaded);
   }
 
   //Manga Information Method
@@ -110,71 +104,67 @@ export class MangaInfoComponent extends SynchroniserSuperTabs {
   }
 
   private async downloadSelectedChapters() {
-    let selectedChapters = this.getSelectedChapters(this.downloadPage);
-    this.slideTo(1); //1 = local chapter page
+    let selectedChapters = this.getSelectedChapters(this.getTab("downloadPage"));
+    this.closeFooter();
+    this.swipeTo(1)
     for (let chapter of selectedChapters) {
       delete chapter['selected'];
       await this.mangaService.downloadChapter(this.manga.parsedTitle, chapter, (progress) => {
-        console.log(progress)
+        //console.log(progress)
         if (progress.action === "length") {
-          this.localPage.addInDownloadingChapter(progress.chapter, progress.length);
+          this.getTab("localPage").addInDownloadingChapter(progress.chapter, progress.length);
         } else if (progress.action === "request" || progress.action === "download") {
-          this.localPage.progressInDownloadingChapter(progress);
+          this.getTab("localPage").progressInDownloadingChapter(progress);
         } else if (progress.action === "end") {
-          this.localPage.removeInDownloadingChapter(progress.chapter);
+          this.getTab("localPage").removeInDownloadingChapter(progress.chapter);
         } else {
           console.log(progress);
         }
       });
-      //this.addDownloadedChaptersToMangaStructure(chapter)
     }
   }
 
   private async deleteSelectedChapters() {
-    let selectedChapters = this.getSelectedChapters(this.localPage);
+    let selectedChapters = this.getSelectedChapters(this.getTab("localPage"));
     console.log("selected chapters:")
     console.log(selectedChapters)
     for (let chapter of selectedChapters) {
       await this.storageService.removeChapterDownload(this.manga.parsedTitle, chapter);
-      this.localPage.updateDownloadedChapters();
+      this.getTab("localPage").updateDownloadedChapters();
     }
   }
 
   private editInfos() {
-    this.landingPage.toggleEdition();
+    this.getTab("landingPage").toggleEdition();
   }
 
-  private dataToMangaInfo(event) {
-    console.log(event)
-    if (event.event !== undefined) {
-      if (event.event.eventName === "checkModeChanged") {
-        this.fabButtonService.toggleCurrentFabVisibility(event.event.checkMode)
-      }
+  private closeFooter(event?) {
+    console.log(event, "coucou", this.pageCheckedName)
+    this.isInCheckMode = false;
+    if (this.pageCheckedName === "local-page") {
+      this.getTab("localPage").setGlobalCheckMode(false)
+    } else if (this.pageCheckedName === "download-page") {
+      this.getTab("downloadPage").setGlobalCheckMode(false)
     } else {
-      if (event.eventName === "toggleEdition") {
-        this.fabButtonService.toggleCurrentFabVisibility(event.inEdition)
-      }
+
     }
   }
 
-  //Slide Managing Method
-  private async getActiveSlideIndex() {
-    //return await this.slides.getActiveIndex();
+  public dataToMangaInfo(infos) {
+    console.log(infos)
+    if (infos.event !== undefined && infos.event.eventName === "checkModeChanged") {
+      this.isInCheckMode = infos.event.value;
+      this.pageCheckedName = infos.sender;
+    }
   }
 
-  private async slideTo(index: number) {
-    //await this.slides.slideTo(index);
-  }
-
-  private async slideChange() {
-    //this.fabButtonService.updateCurrentPage(await this.getActiveSlideIndex());
+  //SuperTabs Methods
+  private async swipeTo(index: number) {
+    this.superTabsComp.selectTab(index);
   }
 
   //Modal & Popover Method
   async close(res: DataObject = { mangaDeleted: false }) {
-    this.landingPage.dismiss();
-    this.localPage.dismiss();
-    this.downloadPage.dismiss();
     this.manga = copyStructureOf(MangaStructure);
     await this.modalController.dismiss(res);
   }

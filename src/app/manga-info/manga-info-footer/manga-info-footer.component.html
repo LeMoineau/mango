@@ -1,0 +1,33 @@
+
+<super-tabs-toolbar
+    slot="bottom"
+    color="light"
+    [showIndicator]="false">
+  <super-tab-button>
+    <ion-icon
+      name="close"
+      class="footer-button-icon"
+      (click)="emit('cancelFunction')">
+    </ion-icon>
+  </super-tab-button>
+  <ng-container
+      *ngIf="fromPage === 'local-page'">
+    <super-tab-button>
+      <ion-icon
+        name="trash"
+        class="footer-button-icon"
+        (click)="emit('deleteFunction')">
+      </ion-icon>
+    </super-tab-button>
+  </ng-container>
+  <ng-container
+      *ngIf="fromPage === 'download-page'">
+    <super-tab-button>
+      <ion-icon
+        name="download"
+        class="footer-button-icon"
+        (click)="emit('downloadFunction')">
+      </ion-icon>
+    </super-tab-button>
+  </ng-container>
+</super-tabs-toolbar>

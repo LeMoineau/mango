@@ -44,10 +44,6 @@ export class MangaInfoLocalPageComponent extends MangaInfoChapterPage implements
     this.manga.chapters.downloadedChapters = await this.storageService.getChaptersDownload(this.manga.parsedTitle);
   }
 
-  public dismiss(): void {
-    this.manga.chapters.downloadedChapters = [];
-  }
-
   //Inherit Methods
   protected getChapters(): DataObject[] {
     return this.manga.chapters.downloadedChapters;

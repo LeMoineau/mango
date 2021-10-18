@@ -33,7 +33,10 @@ export class DownloadComponent extends LoadingModule implements OnInit {
     private navParams: NavParams
   ) {
     super();
-    navParams.data.synchronisePage("downloadPage", this);
+    navParams.get("appContainer").synchroniseTab({
+      keyName: "downloadPage",
+      comp: this
+    })
   }
 
   async ngOnInit() {

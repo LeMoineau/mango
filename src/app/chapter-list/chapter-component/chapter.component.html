@@ -2,7 +2,7 @@
 <ion-item class="section-items">
 
   <ion-label
-      (click)="readManga(chapter)">
+      (click)="!isInCheckMode ? readManga(chapter) : undefined">
     <h3 *ngIf="chapter.title.length > 0" class="item-label-title"> #{{ chapter.num }} - {{ chapter.title }} </h3>
     <h3 *ngIf="chapter.title.length <= 0" class="item-label-title"> Chapitre {{ chapter.num }} </h3>
 
