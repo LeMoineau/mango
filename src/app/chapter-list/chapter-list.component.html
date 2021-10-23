@@ -45,7 +45,8 @@
         [isInCheckMode]="isInCheckMode()"
         [isChecked]="checkedChapter.includes(chapterList[i])"
         [affichage]="affichage"
-        (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])">
+        (checkingChange)="changeCheckedChapter($event.isChecked, chapterList[i])"
+        (wantToDownloadChapter)="wantToDownloadChapterMethod($event)">
       </app-chapter>
     </ng-container>
 

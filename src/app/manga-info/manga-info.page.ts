@@ -10,10 +10,9 @@ import { MangaInfoComponent } from './manga-info.component';
 
 export abstract class MangaInfoPage extends LoadingModule {
 
+  public pageName: string = "mangaInfoPage";
   protected manga: DataObject;
   protected mangaInfo: MangaInfoComponent;
-
-  public globalCheckMode: boolean = false;
 
   protected pageInfos: DataObject = {
     pageLoaded: false,
@@ -29,11 +28,6 @@ export abstract class MangaInfoPage extends LoadingModule {
 
   protected passInformationToMangaInfo(infos: DataObject) {
     this.mangaInfo.dataToMangaInfo(infos)
-  }
-
-  public setGlobalCheckMode(val: boolean) {
-    this.globalCheckMode = val;
-    console.log("coucou")
   }
 
 }

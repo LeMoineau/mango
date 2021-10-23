@@ -85,4 +85,15 @@ export class DownloadComponent extends LoadingModule implements OnInit {
     this.searchingResult = [];
   }
 
+  private async resetNewMangaChapters() {
+    this.currentPageOnline = 1;
+    this.mangaList = {
+      newestChapters: [],
+      recentChapters: []
+    }
+    if (!this.getLowConnectionMode()) {
+      await this.getNewMangaChapters();
+    }
+  }
+
 }

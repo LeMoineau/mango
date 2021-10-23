@@ -103,24 +103,30 @@ export class MangaInfoComponent extends SynchroniserSuperTabs {
     }
   }
 
+  public async downloadChapter(chapter: DataObject) {
+    this.swipeTo(1)
+    delete chapter['selected'];
+    await this.mangaService.downloadChapter(this.manga.parsedTitle, chapter, (progress) => {
+      //console.log(progress)
+      if (progress.action === "length") {
+        this.getTab("localPage").addInDownloadingChapter(progress.chapter, progress.length);
+      } else if (progress.action === "request" || progress.action === "download") {
+        this.getTab("localPage").progressInDownloadingChapter(progress);
+      } else if (progress.action === "end") {
+        this.getTab("localPage").removeInDownloadingChapter(progress.chapter);
+      } else {
+        this.getTab("localPage").progressInDownloadingChapter(progress);
+        console.log(progress);
+      }
+    });
+  }
+
   private async downloadSelectedChapters() {
     let selectedChapters = this.getSelectedChapters(this.getTab("downloadPage"));
     this.closeFooter();
-    this.swipeTo(1)
+    this.swipeTo(1);
     for (let chapter of selectedChapters) {
-      delete chapter['selected'];
-      await this.mangaService.downloadChapter(this.manga.parsedTitle, chapter, (progress) => {
-        //console.log(progress)
-        if (progress.action === "length") {
-          this.getTab("localPage").addInDownloadingChapter(progress.chapter, progress.length);
-        } else if (progress.action === "request" || progress.action === "download") {
-          this.getTab("localPage").progressInDownloadingChapter(progress);
-        } else if (progress.action === "end") {
-          this.getTab("localPage").removeInDownloadingChapter(progress.chapter);
-        } else {
-          console.log(progress);
-        }
-      });
+      this.downloadChapter(chapter);
     }
   }
 
@@ -139,14 +145,10 @@ export class MangaInfoComponent extends SynchroniserSuperTabs {
   }
 
   private closeFooter(event?) {
-    console.log(event, "coucou", this.pageCheckedName)
-    this.isInCheckMode = false;
-    if (this.pageCheckedName === "local-page") {
-      this.getTab("localPage").setGlobalCheckMode(false)
-    } else if (this.pageCheckedName === "download-page") {
-      this.getTab("downloadPage").setGlobalCheckMode(false)
-    } else {
-
+    let tab = this.getTab(this.pageCheckedName)
+    if (tab.isReadyToDisableCheckMode()) {
+      this.isInCheckMode = false;
+      tab.setCheckModeInChapterListChildren(false);
     }
   }
 
@@ -160,7 +162,7 @@ export class MangaInfoComponent extends SynchroniserSuperTabs {
 
   //SuperTabs Methods
   private async swipeTo(index: number) {
-    this.superTabsComp.selectTab(index);
+    await this.superTabsComp.selectTab(index);
   }
 
   //Modal & Popover Method

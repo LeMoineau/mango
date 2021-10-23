@@ -14,20 +14,12 @@ import { getExtensionOfImageUrl } from './utils';
 })
 export class DownloadService {
 
-  private _fileTransfer: FileTransferObject | null = null;
-  private downloadFile = Directory.Data;
+  private downloadFile = Directory.Documents;
 
   constructor(
-    private transfer: FileTransfer,
     private file: File,
     private storageService: StorageService
-  ) {
-    this.init();
-  }
-
-  init() {
-    this._fileTransfer = this.transfer.create();
-  }
+  ) {}
 
   //Basics Methods
   async fileExist(path: string) {
@@ -66,30 +58,45 @@ export class DownloadService {
   }
 
   //More specifics Methods
-  private convertBlobToBase64(blob: Blob) {
+  private convertBlobToBase64(blob: Blob, callback?: Function) {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
+      let reader = new FileReader();
+
+      // Is this a "real" file? In other words, is this an instance of the original `File` class (not the one overriden by cordova-plugin-file).
+      // If so, then we need to use the "real" FileReader (not the one overriden by cordova-plugin-file).
+      if (blob instanceof Blob) {
+        const realFileReader = (reader as any)._realReader;
+        if (realFileReader) {
+          reader = realFileReader;
+        }
+      }
+      reader.onerror = reject
       reader.onload = () => {
         resolve(reader.result);
       };
+
       reader.readAsDataURL(blob);
     });
   }
 
   public async downloadChapterPage(mangaParsedTitle, fileName, response, url, callback) {
 
-    const base64Data = await this.convertBlobToBase64(response) as string;
-    const path = `/chapters/${mangaParsedTitle}/${fileName}.png`;
+    await this.convertBlobToBase64(response).then(async (base64Data) => {
+      const path = `/chapters/${mangaParsedTitle}/${fileName}.png`;
 
-    this.writeFile(path, base64Data).then((res) => {
+      if ((base64Data as string).includes("base64,")) {
+        base64Data = (base64Data as string).split("base64,")[1];
+      }
+
+      await this.writeFile(path, base64Data) // Le probleme est là mtn et c'est relou
+
       callback({
         path: path,
         fileName: fileName,
         mangaParsedTitle: mangaParsedTitle,
         ext: getExtensionOfImageUrl(url)
       })
-    })
+    });
   }
 
   public async removeChapter(mangaParsedTitle, chapter) {

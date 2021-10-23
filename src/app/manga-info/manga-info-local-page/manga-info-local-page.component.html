@@ -12,7 +12,7 @@
       sortedBy="num"
       affichage="downloading"
       [showTitleIfNoChapter]="false"
-      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
+      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: pageName})"
       (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
     </app-chapter-list>
 
@@ -24,7 +24,7 @@
       [checkMode]="globalCheckMode"
       [modalOptionsToShow]="['read', 'delete']"
       sortedBy="num"
-      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'local-page'})"
+      (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: pageName})"
       (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
     </app-chapter-list>
 

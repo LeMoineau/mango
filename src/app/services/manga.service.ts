@@ -114,13 +114,23 @@ export class MangaService {
           await this.requestWeb(url, async (res) => {
             let page = urls.indexOf(url);
             callbackProgress({
-              action: 'request',
+              action: `request`,
               chapter: chapter,
               finish: true,
               page: page
             })
             await this.downloadService.downloadChapterPage(parsedTitle, `chapitre-${chapter.num}-${page+1}`, res, url, async (data) => {
+
               let index = urls.indexOf(url);
+              if (data.test !== undefined) {
+                callbackProgress({
+                  action: `${data.test}`,
+                  chapter: chapter,
+                  finish: true,
+                  page: index
+                })
+                return;
+              }
               data.nbPage = index;
               chapter.pages[index] = data;
               callbackProgress({

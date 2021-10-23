@@ -83,6 +83,9 @@ export class SettingsComponent implements OnInit {
 
   private async selectChange(parameter: string, event) {
     this.settingsService.setParameter(parameter, event.detail.value);
+    if (parameter === "proxyNewChapter") {
+      await this.appContainer.getTab("downloadPage").resetNewMangaChapters();
+    }
     await this.showNotification(`Source mise à jour pour '${event.detail.value}' !`);
   }
 

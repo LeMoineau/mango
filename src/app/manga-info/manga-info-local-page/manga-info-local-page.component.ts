@@ -20,6 +20,7 @@ export class MangaInfoLocalPageComponent extends MangaInfoChapterPage implements
 
   //private manga: DataObject[]
 
+  public pageName: string = "localPage"
   private inDownloadingChapters: DataObject[] = [];
 
   constructor(
@@ -30,7 +31,7 @@ export class MangaInfoLocalPageComponent extends MangaInfoChapterPage implements
   ) {
     super(navParams);
     this.mangaInfo.synchroniseTab({
-      keyName: "localPage",
+      keyName: this.pageName,
       comp: this
     })
   }

@@ -11,7 +11,7 @@ import { ScanvfCC } from './../proxys/scanvf-cc.proxy';
 @Injectable()
 export class ProxyService {
 
-  public inProduction: boolean = false;
+  public inProduction: boolean = true;
 
   public iter: string[] = ["scantrad", "scanvfNet", "scanvfCC"]
 

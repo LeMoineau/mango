@@ -16,8 +16,9 @@
         [modalOptionsToShow]="['readOnline', 'download']"
         [InWaiting]="InWaiting()"
         [checkMode]="globalCheckMode"
-        (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: 'download-page'})"
-        (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)">
+        (checkModeChanged)="passInformationToMangaInfo({event: $event, sender: pageName})"
+        (updateCheckedChapterList)="setSelectedChapters($event.checkedChapter)"
+        (wantToDownloadChapter)="wantToDownloadChapterMethod($event)">
       </app-chapter-list>
     </ng-container>
 

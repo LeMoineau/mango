@@ -21,6 +21,8 @@ export class ChapterComponent implements OnInit {
   @Output() checkingChange = new EventEmitter<DataObject>();
   @Input() isChecked: boolean = false;
 
+  @Output() wantToDownloadChapter = new EventEmitter<DataObject>();
+
   //Options
   @Input() affichage: string = "normal"; //<normal|downloading>
   @Input() modalOptionsToShow: string[] = ["read", "delete", "download"];
@@ -58,6 +60,13 @@ export class ChapterComponent implements OnInit {
     this.mangaService.deleteDownloadChapter(this.mangaParent.parsedTitle, chapter);
   }
 
+  public downloadChapter(chapter: DataObject) {
+    this.wantToDownloadChapter.emit({
+      event: "wantToDownloadChapter",
+      value: chapter
+    })
+  }
+
   private async openActionSheet(chapter: DataObject) {
     let bankButtons = [
       {
@@ -81,7 +90,7 @@ export class ChapterComponent implements OnInit {
         role: "download",
         icon: "download",
         handler: () => {
-          this.deleteChapter(chapter);
+          this.downloadChapter(chapter);
         }
       },
       {

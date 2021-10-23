@@ -35,6 +35,7 @@ export class ChapterListComponent implements OnInit {
   @Output() checkModeChanged = new EventEmitter<DataObject>();
   @Output() updateCheckedChapterList = new EventEmitter<DataObject>();
   @Output() showMoreChapter = new EventEmitter<DataObject>();
+  @Output() wantToDownloadChapter = new EventEmitter<DataObject>();
 
   constructor() {
     this.NotFoundMessage = getRandomNotFoundMessage();
@@ -45,7 +46,7 @@ export class ChapterListComponent implements OnInit {
 
   //Setter Getter
   @Input() set chapterList(val: DataObject[]) {
-    if (this.sortedBy !== "nothing") {
+    if (this.sortedBy !== "nothing" && val !== undefined) {
       val.sort((a, b) => {
         if (a[this.sortedBy] > b[this.sortedBy]) {
           return -1
@@ -64,7 +65,6 @@ export class ChapterListComponent implements OnInit {
 
   @Input() set checkMode(val: boolean) {
     this._checkMode = val;
-    console.log("slaut")
   }
 
   get checkMode() {
@@ -84,9 +84,9 @@ export class ChapterListComponent implements OnInit {
     return this.chapterList === undefined ? 0 : this.chapterList.length;
   }
 
-  private toggleCheckMode(val: boolean = undefined) {
+  private toggleCheckMode() {
     if (this.isCheckable) {
-      this.checkMode = val === undefined ? !this.checkMode : val;
+      this.checkMode = !this.checkMode;
       this.checkModeChanged.emit({
         eventName: "checkModeChanged",
         checkMode: this.checkMode,
@@ -137,6 +137,10 @@ export class ChapterListComponent implements OnInit {
       this.changeCheckedChapter(event.detail.checked, chapter);
     }
     console.log(this.checkedChapter)
+  }
+
+  wantToDownloadChapterMethod(event) {
+    this.wantToDownloadChapter.emit(event);
   }
 
 }

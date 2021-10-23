@@ -17,6 +17,7 @@ import { copyStructureOf } from './../../services/utils';
 export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage implements OnInit {
 
   //private manga: DataObject[]
+  public pageName: string = "downloadPage"
   private selectedProxy: string;
 
   @Output() newMangaInfoLoaded = new EventEmitter<DataObject>();
@@ -28,7 +29,7 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
   ) {
     super(navParams);
     this.mangaInfo.synchroniseTab({
-      keyName: "downloadPage",
+      keyName: this.pageName,
       comp: this
     })
   }
@@ -83,6 +84,10 @@ export class MangaInfoDownloadPageComponent extends MangaInfoChapterPage impleme
     if (!this.settingsService.getParameter("lowConnectionMode")) {
       this.updateMangaInfos(event.selectedProxy);
     }
+  }
+
+  private wantToDownloadChapterMethod(event) {
+    this.mangaInfo.downloadChapter(event.value);
   }
 
 }

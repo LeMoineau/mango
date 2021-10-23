@@ -9,7 +9,7 @@ export abstract class SynchroniserSuperTabs {
   private tabs: DataObject = {};
 
   synchroniseTab(tab) {
-    console.log(tab)
+    //console.log(tab)
     this.tabs[tab.keyName] = tab.comp;
 
     this.currentTabCharged += 1;

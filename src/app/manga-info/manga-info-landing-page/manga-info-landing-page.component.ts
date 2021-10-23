@@ -18,6 +18,7 @@ import { SettingsService } from './../../services/settings.service';
 })
 export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnInit {
 
+  public pageName: string = "landingPage"
   private inEdition: boolean = false;
   private newInfoKeys: DataObject = {}
 
@@ -30,7 +31,7 @@ export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnIn
   ) {
     super(navParams);
     this.mangaInfo.synchroniseTab({
-      keyName: "landingPage",
+      keyName: this.pageName,
       comp: this
     })
   }
@@ -89,7 +90,6 @@ export class MangaInfoLandingPageComponent extends MangaInfoPage implements OnIn
   }
 
   public async toggleEdition() {
-    console.log("coucou")
     if (this.isInEdition()) {
       await this.editionEnd();
     } else {
