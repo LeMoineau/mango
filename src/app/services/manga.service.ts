@@ -120,7 +120,6 @@ export class MangaService {
               page: page
             })
             await this.downloadService.downloadChapterPage(parsedTitle, `chapitre-${chapter.num}-${page+1}`, res, url, async (data) => {
-
               let index = urls.indexOf(url);
               if (data.test !== undefined) {
                 callbackProgress({

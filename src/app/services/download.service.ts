@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import axios from 'axios';
 
 import { DataObject } from './objects';
@@ -14,7 +14,7 @@ import { getExtensionOfImageUrl } from './utils';
 })
 export class DownloadService {
 
-  private downloadFile = Directory.Documents;
+  private downloadFile = Directory.Data;
 
   constructor(
     private file: File,
@@ -41,11 +41,12 @@ export class DownloadService {
     }
   }
 
-  async writeFile(path: string, base64Data) {
+  async writeFile(path: string, base64Data, recursive: boolean = true) {
     await Filesystem.writeFile({
       path: path,
       data: base64Data,
-      directory: this.downloadFile
+      directory: this.downloadFile,
+      recursive: recursive
     });
   }
 
@@ -80,7 +81,6 @@ export class DownloadService {
   }
 
   public async downloadChapterPage(mangaParsedTitle, fileName, response, url, callback) {
-
     await this.convertBlobToBase64(response).then(async (base64Data) => {
       const path = `/chapters/${mangaParsedTitle}/${fileName}.png`;
 
@@ -88,7 +88,7 @@ export class DownloadService {
         base64Data = (base64Data as string).split("base64,")[1];
       }
 
-      await this.writeFile(path, base64Data) // Le probleme est là mtn et c'est relou
+      await this.writeFile(path, base64Data)
 
       callback({
         path: path,
