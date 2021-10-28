@@ -34,7 +34,9 @@ Pour toutes les fois:
 - `ionic cap open <android|ios>` _pour lancer android Studio ou l'équivalent iOS avec votre projet_
 - `ionic cap run <android|ios> -l --external` _pour lancer en reload auto votre application sur emulateur_
 
-__source__: https://ionicframework.com/docs/angular/your-first-app/6-deploying-mobile
+__source__: 
+- https://ionicframework.com/docs/angular/your-first-app/6-deploying-mobile
+- https://ionicframework.com/docs/angular/your-first-app/7-live-reload
 
 ## Crédits (web scraping)
 
