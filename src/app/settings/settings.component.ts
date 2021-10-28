@@ -9,8 +9,6 @@ import { ProxyService } from './../services/proxy.service';
 import { ModalService } from './../services/modal.service';
 import { InitialSettings } from './../services/objects';
 
-import { MangaInfoComponent } from './../manga-info/manga-info.component';
-
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -18,7 +16,7 @@ import { MangaInfoComponent } from './../manga-info/manga-info.component';
 })
 export class SettingsComponent implements OnInit {
 
-  private appContainer: MangaInfoComponent;
+  private appContainer;
 
   constructor(
     private settingsService: SettingsService,

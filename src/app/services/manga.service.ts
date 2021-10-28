@@ -53,7 +53,7 @@ export class MangaService {
         callbackErr(err)
       })
     } else {
-      axios.get(url, options).then((res) => {
+      axios[options.method](url, options.data).then((res) => {
         callback(!sendAll ? res.data : res);
       }).catch(err => {
         callbackErr(err)
@@ -179,6 +179,23 @@ export class MangaService {
       }
       console.log(downloadedChapters)
     }
+  }
+
+  async searchingMangas(proxy: string, mangaParsedTitle: string, callback: Function, callbackErr: Function) {
+    let currentProxy = this.proxyService.getProxy(proxy);
+    let searchUrl = currentProxy.urlSearch(mangaParsedTitle)
+    //console.log(searchUrl)
+    let res = await this.requestWeb(
+      searchUrl[0],
+      (data) => {
+        currentProxy.scrapeSearch(data, (res) => {
+          callback(res)
+        })
+      }, (err) => {
+        callbackErr(err)
+      },
+      searchUrl[1]
+    )
   }
 
 }

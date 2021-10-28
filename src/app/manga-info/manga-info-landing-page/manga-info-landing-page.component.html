@@ -79,7 +79,7 @@
       </ng-container>
 
       <!-- Aucune infos trouvées -->
-      <ng-container *ngIf="manga.infos.iter.length <= 0 && !InWaiting()">
+      <ng-container *ngIf="manga.infos.iter !== undefined && manga.infos.iter.length <= 0 && !InWaiting()">
         <ion-item class="not-found-message">
           <ion-icon
             size="large"

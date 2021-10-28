@@ -22,9 +22,7 @@ export class DownloadComponent extends LoadingModule implements OnInit {
     recentChapters: []
   }
 
-  private searchingResult = [
-
-  ]
+  private searchingResult = []
 
   constructor(
     private mangaService: MangaService,
@@ -65,19 +63,11 @@ export class DownloadComponent extends LoadingModule implements OnInit {
     this.currentPageOnline += 1;
   }
 
-  public addSearchingResult(result: DataObject) {
-    console.log(result)
-    if (result.beginNewSearch === true) {
-      this.resetSearchingResult();
-    } else if (result.data !== null && result.data !== undefined && result.data.title !== undefined && result.data.title.length > 0) {
-      let manga = result.data;
-      manga.infos.source = result.source;
-      this.searchingResult.unshift(manga);
-      console.log(this.searchingResult)
-    }
-
-    if (result.lastResearch) {
-      this.endWaiting()
+  public addSearchingResult(res: DataObject[]) {
+    for (let manga of res) {
+      if (!this.searchingResult.find(m => m.parsedTitle === manga.parsedTitle)) {
+        this.searchingResult.push(manga)
+      }
     }
   }
 

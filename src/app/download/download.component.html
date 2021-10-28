@@ -14,6 +14,9 @@
     <p>Les illustrations des mangas sont aussi cachées pour minimiser au maximum l'utilisation de donnée.</p>
   </section>
 
+  <!-- Chargement des Chapitres -->
+  <ion-spinner *ngIf="InWaiting()" name="circular"></ion-spinner>
+
   <!-- Resultats de recherche -->
   <app-chapter-list
     title="Recherche"
@@ -29,7 +32,8 @@
     title="Nouveaux Chapitres"
     [chapterList]="mangaList.newestChapters"
     [isMangaList]="true"
-    [showTitleIfNoChapter]="!getLowConnectionMode()">
+    [showTitleIfNoChapter]="!getLowConnectionMode()"
+    [baseActiveSlideInMangaInfo]="0">
   </app-chapter-list>
 
   <!-- Chapitres récents -->

@@ -30,6 +30,7 @@ export class ChapterListComponent implements OnInit {
   @Input() sortedBy: string = "nothing";
   @Input() isCheckable: boolean = true;
   @Input() isMangaList: boolean = false;
+  @Input() baseActiveSlideInMangaInfo: number = 2;
 
   //Outputs
   @Output() checkModeChanged = new EventEmitter<DataObject>();

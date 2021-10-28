@@ -36,7 +36,10 @@
       <img *ngIf="!settingsService.getParameter('lowConnectionMode')" [src]="manga.image">
       <img *ngIf="settingsService.getParameter('lowConnectionMode')" src="assets/icon/favicon.png">
     </ion-thumbnail>
-    <div class="manga-tags">
+    <div class="manga-absolute-box manga-title" *ngIf="settingsService.getParameter('lowConnectionMode')">
+      {{ lines.title }}
+    </div>
+    <div class="manga-absolute-box manga-tags">
       <ng-container *ngFor="let tag of tagsEnabled">
         <ion-icon
           [name]="tagsService.getTagInfo(tag, 'icon')"

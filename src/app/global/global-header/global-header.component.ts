@@ -15,6 +15,7 @@ export class GlobalHeaderComponent implements OnInit {
 
   @Input() title: string = "Blank";
   @Input() hideSearch: boolean = false;
+  private _appContainer;
 
   @Output() searchingReturn = new EventEmitter();
   private nbSearchingResult: number = 0;
@@ -50,9 +51,24 @@ export class GlobalHeaderComponent implements OnInit {
     private settingsService: SettingsService,
     private mangaService: MangaService,
     private proxyService: ProxyService
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() { }
+
+  //Getter & Setter
+  @Input() set appContainer(val: any) {
+    this._appContainer = val
+    this.appContainer.synchroniseTab({
+      keyName: "globalHeader",
+      comp: this
+    })
+  }
+
+  get appContainer() {
+    return this._appContainer;
+  }
 
   //Basics Methods
   public setSelectedTab(index: number) {
@@ -78,29 +94,28 @@ export class GlobalHeaderComponent implements OnInit {
   }
 
   private async searchOnlineMangas(mangaTitle: string) {
-    this.nbSearchingResult = 0;
-    this.searchingReturn.emit({ tabIndex: 0, beginNewSearch: true })
+    this.appContainer.getTab("downloadPage").beginWaiting();
 
     let mangaParsedTitle = this.toParsedFormat(mangaTitle);
     let proxyUse = this.settingsService.getParameter("proxySearch");
 
     if (proxyUse === "all") {
       for (let proxy of this.proxyService.iter) {
-        this.mangaService.getMangaInfos(proxy, mangaParsedTitle, (data) => {
-          data.parsedTitle = mangaParsedTitle
-          this.sendReponse(data, null, proxy)
-        }, (err) => {
-          this.sendReponse(null, err, proxy)
-        }, false) //false to not save in mangas already loaded
+        await this.treatSearching(proxy, mangaParsedTitle)
       }
     } else {
-      let res = await this.mangaService.getMangaInfos(proxyUse, mangaParsedTitle, (data) => {
-        data.parsedTitle = mangaParsedTitle
-        this.sendReponse(data, null)
-      }, (err) => {
-        this.sendReponse(null, err)
-      })
+      await this.treatSearching(proxyUse, mangaParsedTitle)
     }
+
+    this.appContainer.getTab("downloadPage").endWaiting();
+  }
+
+  private async treatSearching(proxy, mangaParsedTitle) {
+    await this.mangaService.searchingMangas(proxy, mangaParsedTitle, (res) => {
+      this.appContainer.getTab("downloadPage").addSearchingResult(res);
+    }, (err) => {
+      console.log(err)
+    })
   }
 
   private sendReponse(data: DataObject = null, err = null, source = this.settingsService.getParameter("proxySearch")) {

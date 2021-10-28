@@ -29,6 +29,21 @@ export class Scantrad implements Proxy {
     return `${this.currentURLstart}/mangas/${mangaParsedTitle}/${chapter.num}`;
   }
 
+  urlSearch(mangaQuery: string) {
+    let bodyFormData = new FormData();
+    bodyFormData.append("q", mangaQuery)
+    return [
+      `${this.currentURLstart}/`,
+      {
+        method: "post",
+        data: bodyFormData,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }
+    ]
+  }
+
   scrapeNewChaptersSection(html: string, selector: string, callback) {
 
     let data: DataObject[] = [];
@@ -117,6 +132,29 @@ export class Scantrad implements Proxy {
       urls.push(url)
     }
     callback(urls);
+
+  }
+
+  scrapeSearch(html: string, callback: Function) {
+
+    const $ = cheerio.load(html);
+    let res = []
+    $(".recherche-g").each((index, value) => {
+      const mangaDOM = cheerio.load(value)
+
+      res.push({
+        parsedTitle: mangaDOM(".rg-left").parent().attr("href").substr(1),
+        title: mangaDOM(".rgr-titre").text().trim(),
+        image: mangaDOM("img").attr("src"),
+        infos: {
+          genre: mangaDOM(".rgr-genre").text().trim(),
+          lastChapter: mangaDOM('.rgr-lastChap').text().trim(),
+          source: this.proxyName
+        }
+
+      })
+    })
+    callback(res)
 
   }
 

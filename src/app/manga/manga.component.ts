@@ -18,7 +18,7 @@ import { TagsService } from './../services/tags.service';
 export class MangaComponent implements OnInit {
 
   private _manga: DataObject;
-  private _affichage: string = "normal";
+  private _affichage: string = ""; //<normal|mangatheque|sourced-manga>
   @Input() baseActiveSlide: number = 0;
 
   @Output() mangaInfoClose = new EventEmitter();
@@ -41,7 +41,6 @@ export class MangaComponent implements OnInit {
   async ngOnInit() {
     await this.updateTags();
     //console.log(this.manga)
-    console.log(this.lines)
   }
 
   //Getter & Setters

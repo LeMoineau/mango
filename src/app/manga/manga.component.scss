@@ -13,17 +13,31 @@
     --image-size: 100%;
     transform: translate(0);
 
-    .manga-tags {
+    .manga-absolute-box {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: left;
       align-items: center;
       padding: 2px;
-      background-color: white;
+      background-color: var(--ion-color-light);
       border-radius: 20px;
+      color: var(--ion-text-color);
+
+      &.manga-title {
+        bottom: 35px;
+        right: 10px;
+        max-width: calc(100% - 10px - 5px);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 2px 7px;
+      }
+
+      &.manga-tags {
+        bottom: 10px;
+        right: 10px;
+      }
     }
   }
 

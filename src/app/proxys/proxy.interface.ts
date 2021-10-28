@@ -14,11 +14,14 @@ export interface Proxy {
   urlNewChapters: () => string;
   urlMangaInfo: (mangaParsedTitle: string) => string;
   urlChapterPages: (mangaParsedTitle: string, chapter: DataObject) => string;
-  urlSearch?: (mangaQuery: string) => {
-    url: string,
-    method: string,
-    options?: DataObject
-  };
+  urlSearch?: (mangaQuery: string) => (string | DataObject)[];
+  /**
+   * [url,
+   * {
+   *  method,
+   *  data
+   * }]
+   */
 
   scrapeNewChapters: (html: string, callback) => void;
   /**
@@ -35,5 +38,13 @@ export interface Proxy {
   scrapeMangaInfos: (html: string, callback) => void;
   scrapeChapterPagesURL: (parsedTitle: string, chapter: DataObject, html: string, callback) => void;
   scrapeSearch?: (html: string, callback) => void;
+  /**
+   * Return:
+   * [{
+   *  title,
+   *  <?>
+   * },
+   * ...]
+   */
 
 }

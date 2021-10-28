@@ -52,6 +52,7 @@ export class MangaInfoComponent extends SynchroniserSuperTabs {
 
   public afterAllTabCharged() {
     this.init();
+    //console.log(this.manga)
   }
 
   private async init() {
