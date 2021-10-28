@@ -31,7 +31,8 @@ Si c'est la première fois, tapez les commandes suivantes:
 
 Pour toutes les fois:
 - `ionic cap sync`
-- `ionic cap open <android|ios>`
+- `ionic cap open <android|ios>` _pour lancer android Studio ou l'équivalent iOS avec votre projet_
+- `ionic cap run <android|ios> -l --external` _pour lancer en reload auto votre application sur emulateur_
 
 __source__: https://ionicframework.com/docs/angular/your-first-app/6-deploying-mobile
 
