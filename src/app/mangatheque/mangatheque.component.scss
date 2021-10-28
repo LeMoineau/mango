@@ -22,6 +22,17 @@
 
 }
 
+#mangathequeList.grid {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  background-color: transparent;
+
+}
+
 #to-show-manga-super-container {
 
   padding-inline: 0;
@@ -55,11 +66,7 @@
         img {
           border-radius: 10px;
         }
-
       }
-
     }
-
   }
-
 }

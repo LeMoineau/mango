@@ -17,13 +17,18 @@ import { TagsService } from './../services/tags.service';
 })
 export class MangaComponent implements OnInit {
 
-  @Input() manga: DataObject;
-  @Input() affichage: string = "normal";
+  private _manga: DataObject;
+  private _affichage: string = "normal";
   @Input() baseActiveSlide: number = 0;
 
   @Output() mangaInfoClose = new EventEmitter();
 
   private tagsEnabled: string[] = [];
+  private lines: DataObject = {
+    title: "Titre du manga",
+    subInfo: "",
+    subsubInfo: ""
+  }
 
   constructor(
     private mangaService: MangaService,
@@ -36,30 +41,44 @@ export class MangaComponent implements OnInit {
   async ngOnInit() {
     await this.updateTags();
     //console.log(this.manga)
+    console.log(this.lines)
   }
 
-  private getSubinfoString() {
+  //Getter & Setters
+  @Input() set manga(val: DataObject) {
+    this._manga = val;
+    this.updateLines();
+  }
+
+  get manga() {
+    return this._manga;
+  }
+
+  @Input() set affichage(val: string) {
+    this._affichage = val;
+    this.updateLines();
+  }
+
+  get affichage() {
+    return this._affichage;
+  }
+
+  //Specifics Methods
+  private updateLines() {
+    if (this.manga !== undefined) this.lines.title = this.manga.title;
+
     if (this.affichage === "normal") {
-      return `${this.manga.chapter.title.length > 0 ?
+
+      this.lines.subInfo = `${this.manga.chapter.title.length > 0 ?
         `#${this.manga.chapter.num} - ${this.manga.chapter.title}` : `Chapitre ${this.manga.chapter.num}`}`;
-    } else if (this.affichage === "mangatheque") {
-      return ""
-    } else if (this.affichage === "sourced-manga") {
-      return ` ― ${this.manga.infos.source || "aucune source"} `
-    } else {
-      return "";
-    }
-  }
+      this.lines.subsubInfo = `${this.manga.chapter.date}`; // ― ${ this.manga.chapter.source }
 
-  private getSubsubInfoString() {
-    if (this.affichage === "normal") {
-      return `${this.manga.chapter.date}`; // ― ${ this.manga.chapter.source }
     } else if (this.affichage === "mangatheque") {
-      return ""
+
     } else if (this.affichage === "sourced-manga") {
-      return ""
-    } else {
-      return "";
+
+      this.lines.subInfo = ` ― ${this.manga.infos.source || "aucune source"}`
+
     }
   }
 

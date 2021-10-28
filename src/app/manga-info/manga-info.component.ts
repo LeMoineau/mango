@@ -167,7 +167,6 @@ export class MangaInfoComponent extends SynchroniserSuperTabs {
 
   //Modal & Popover Method
   async close(res: DataObject = { mangaDeleted: false }) {
-    this.manga = copyStructureOf(MangaStructure);
     await this.modalController.dismiss(res);
   }
 

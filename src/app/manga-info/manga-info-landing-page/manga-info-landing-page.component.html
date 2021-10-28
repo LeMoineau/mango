@@ -2,12 +2,11 @@
 <ion-content>
   <!-- Illustration -->
   <section id="information-illustration-section" class="manga-info-section">
-    <manga-icon
-      *ngIf="!InWaiting()"
-      [mangaImage]="manga.image"
-      [mangaTitle]="manga.title"
-      class="information-illustration">
-    </manga-icon>
+    <ion-thumbnail
+        *ngIf="!InWaiting() && !settingsService.getParameter('lowConnectionMode')"
+        class="information-illustration">
+      <img [src]="manga.image">
+    </ion-thumbnail>
     <ion-thumbnail *ngIf="InWaiting()" class="information-illustration">
       <ion-skeleton-text animated></ion-skeleton-text>
     </ion-thumbnail>

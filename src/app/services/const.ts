@@ -9,7 +9,6 @@ import { SettingsToggleItemComponent } from './../settings/settings-toggle-item/
 import { MangaInfoComponent } from './../manga-info/manga-info.component';
 import { MangaInfoMenuComponent } from './../manga-info/manga-info-menu/manga-info-menu.component';
 import { MangaReaderComponent } from './../manga-reader/manga-reader.component';
-import { MangaIconComponent } from './../manga-icon/manga-icon.component';
 import { MangaInfoLandingPageComponent } from './../manga-info/manga-info-landing-page/manga-info-landing-page.component';
 import { MangaInfoDownloadPageComponent } from './../manga-info/manga-info-download-page/manga-info-download-page.component';
 import { MangaInfoProxySelectorBarComponent }
@@ -41,7 +40,6 @@ export const DeclaredComponents = [
   SettingsComponent,
   MangathequeComponent,
   MangaReaderComponent,
-  MangaIconComponent,
   MangaInfoLandingPageComponent,
   MangaInfoDownloadPageComponent,
   MangaInfoProxySelectorBarComponent,

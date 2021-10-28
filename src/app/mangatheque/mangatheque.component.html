@@ -46,7 +46,7 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <ion-list id="mangathequeList" [ngClass]="{grid: settingsService.getParameter('mangathequeGrid')}">
     <ng-container *ngFor="let mangaTmp of toShowMangas">
       <app-manga
         *ngIf="allMangas[mangaTmp.mangaParsedTitle] !== undefined"
@@ -56,23 +56,5 @@
       </app-manga>
     </ng-container>
   </ion-list>
-  <!--
-  <ion-grid id="to-show-manga-super-container">
-    <ion-row id="to-show-manga-container">
-      <ion-col *ngFor="let choosenOne of toShowMangas" class="to-show-manga">
-        <manga-icon
-          *ngIf="allMangas[choosenOne.manga] !== undefined"
-          [mangaImage]="allMangas[choosenOne.manga].image"
-          [mangaTitle]="allMangas[choosenOne.manga].title"
-          (click)="openMangaInfo(choosenOne.manga)"
-          class="manga-thumbnail">
-        </manga-icon>
-        <ion-thumbnail *ngIf="allMangas[choosenOne.manga] === undefined" class="manga-thumbnail">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  -->
 
 </ion-content>

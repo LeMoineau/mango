@@ -14,7 +14,7 @@ import { getExtensionOfImageUrl } from './utils';
 })
 export class DownloadService {
 
-  private downloadFile = Directory.Data;
+  private downloadFile = Directory.Documents;
 
   constructor(
     private file: File,

@@ -24,6 +24,10 @@
   min-width: var(--size);
   min-height: var(--size);
 
+  img {
+    border-radius: 5px;
+  }
+
 }
 
 .items-container-title.all-centered-title {

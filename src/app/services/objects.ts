@@ -20,6 +20,7 @@ export const InitialSettings: DataObject = {
   darkMode: false,
   lowConnectionMode: true,
   autoSaveMangas: false,
+  mangathequeGrid: true,
   proxyNewChapter: "scantrad",
   proxyDownloadChapter: "scanvfNet",
   proxySearch: "all"

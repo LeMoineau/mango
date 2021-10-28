@@ -1,7 +1,7 @@
 
 <ion-content>
 
-  <!-- Settings -->
+  <!-- General Settings -->
   <ion-list id="settings-global-list">
     <ion-list-header>
       <ion-label>
@@ -17,23 +17,12 @@
     <settings-toggle-item baseIcon="bookmark" targetParameter="autoSaveMangas">
       Auto-Save Mangas
     </settings-toggle-item>
-    <ion-item button (click)="viderCache()">
-      <ion-label>
-        Vider le cache
-      </ion-label>
-      <ion-icon [name]="getUpdatedIconDarkMode('archive')" slot="start"></ion-icon>
-    </ion-item>
-    <ion-item button (click)="eraseAllStorage()">
-      <ion-label>
-        Effacer toutes les données
-      </ion-label>
-      <ion-icon [name]="getUpdatedIconDarkMode('trash')" slot="start"></ion-icon>
-    </ion-item>
-
-    <!-- Proxy pour new chapter et download (ion-select) -->
-    <!-- Allow de chercher dans tous les proxy lors d'une recherche manuelle (searchbar) (sinon que dans proxyNewChapters et proxyRecentChapters) -->
+    <settings-toggle-item baseIcon="grid" targetParameter="mangathequeGrid">
+      Mangatheque Grille
+    </settings-toggle-item>
   </ion-list>
 
+  <!-- Sources des sections à chapitres -->
   <ion-list lines="full">
     <ion-list-header>
       <ion-label>
@@ -76,8 +65,29 @@
     </ion-item>
   </ion-list>
 
+  <!-- Vidage de données -->
+  <ion-list id="settings-global-list">
+    <ion-list-header>
+      <ion-label>
+        <h2>Gestion des données</h2>
+      </ion-label>
+    </ion-list-header>
+    <ion-item button (click)="viderCache()">
+      <ion-label>
+        Vider le cache
+      </ion-label>
+      <ion-icon [name]="getUpdatedIconDarkMode('archive')" slot="start"></ion-icon>
+    </ion-item>
+    <ion-item button (click)="eraseAllStorage()">
+      <ion-label>
+        Effacer toutes les données
+      </ion-label>
+      <ion-icon [name]="getUpdatedIconDarkMode('trash')" slot="start"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <!-- Crédits -->
   <ion-list>
-    <!-- Crédits -->
     <ion-list-header>
       <ion-label>
         <h2>Crédits</h2>
@@ -93,10 +103,13 @@
     </ion-item>
   </ion-list>
 
-  <ion-button class="settings-button" (click)="showAllSettings()" expand="block">
-    show all settings
-  </ion-button>
-  <ion-button class="settings-button" (click)="showStorage()" expand="block">
-    show all storage
-  </ion-button>
+  <!-- Debug buttons -->
+  <ng-container *ngIf="!proxyService.inProduction">
+    <ion-button class="settings-button" (click)="showAllSettings()" expand="block">
+      show all settings
+    </ion-button>
+    <ion-button class="settings-button" (click)="showStorage()" expand="block">
+      show all storage
+    </ion-button>
+  </ng-container>
 </ion-content>
